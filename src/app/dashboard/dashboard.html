@@ -1,0 +1,417 @@
+<div class="content-section">
+    <!-- Header -->
+    <div class="row tittle">
+        <div class="col-12 col-md-5 align-self-center">
+            <h5>Dashboard</h5>
+        </div>
+        <div class="col-12 col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Date Filter -->
+    <!-- <div class="card">
+        <div class="card-body">
+            <div class="row mb-3 g-2 align-items-end">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <label>Select Date</label>
+                    <input type="date" class="form-control" [(ngModel)]="selectDate" (change)="getDashboardData()">
+                </div>
+ 
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Dashboard Cards -->
+    <!-- <div class="card-header">
+        <h6>
+            {{ selectDate === (today | date:'yyyy-MM-dd')
+            ? 'Summary of yesterday’s sales.'
+            : `Summary of sales on ${selectDate}` }}
+        </h6>
+    </div> -->
+    <!-- <div class="row g-3 dashboard">
+        <div class="col-12 col-md-6 col-lg-3 d-flex p-2" *ngFor="let c of cards">
+
+            <div class="card myCard" [ngClass]="c.color" (click)="toggleFlip(c, $event)">
+                <div class="card-body innerCard" [class.flipped]="c.flipped">
+                    <div class="frontSide">
+                        <div class="d-flex" style="justify-content: space-between;">
+                            <div class="align-items-center mb-2" style="width:100px">
+                                <div class="round me-2"><i [class]="c.icon"></i></div>
+                                <h6 class="mb-5 text-white">&nbsp;{{ c.title }}</h6>
+
+                            </div>
+                            <ul class="range">
+                                <li *ngFor="let s of c.sub_main">
+                                    <span *ngIf="s.value > 0">
+                                        <strong>{{ s.label }} </strong>
+                                        <span class="rangevalue">{{ s.unit }} {{s.value}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <h4 class="text-white mb-0 value-title">{{ c.main.unit }}{{ c.main.value
+                            }}</h4>
+                        <div class="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                <path
+                                    d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="backSide">
+                        <div class="mt-auto">
+                            <p class="mb-1 text-white dashlist" *ngFor="let s of c.subs">
+                                {{ s.label }} <span>{{ s.unit }}&nbsp;{{ s.value
+                                    }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="card">
+        <div class="card-body">
+            <div class="graph-section">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-lg-4 card">
+                            <div class="card-body">
+                                <h5 class="text-center mt-2">29 Aug 2025 Onwards</h5>
+                                <div class="row">
+                                    <div *ngFor="let tank of tanks" class="col-12 col-md-6 col-lg-6">
+                                        <div class="p-4 shadow rounded-lg border">
+                                            <apx-chart [series]="getSeries(tank.currentNum, tank.capacityNum)"
+                                                [chart]="chart" [plotOptions]="plotOptions"
+                                                [tooltip]="getTooltip(tanks)" [labels]="[tank.name]"
+                                                [colors]="[tank.color]">
+                                            </apx-chart>
+
+                                            <div class="text-center mt-2 text-sm">
+                                                {{ tank.currentLabel }} / {{ tank.capacityLabel }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4 card">
+                            <div class=" card-body">
+                                <h5 class="text-center mt-2">Last Purchase </h5>
+                                <div class="row">
+                                    <div *ngFor="let ptank of purchasetanks" class="col-12 col-md-6 col-lg-6">
+                                        <div class="p-4 shadow rounded-lg border">
+                                            <apx-chart [series]="getSeries(ptank.currentNum, ptank.capacityNum)"
+                                                [chart]="chart" [tooltip]="getTooltip(purchasetanks)"
+                                                [plotOptions]="plotOptions" [labels]="[ptank.name]"
+                                                [colors]="[ptank.color]">
+                                            </apx-chart>
+                                            <div class="text-center mt-2 text-sm">
+                                                {{ ptank.currentLabel }} / {{ ptank.capacityLabel }} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4 card">
+                            <div class="card-body">
+                                <h5 class="text-center mt-2">Current Month </h5>
+                                <div class="row">
+                                    <div *ngFor="let lmtank of lastmonthtanks" class="col-12 col-md-6 col-lg-6">
+                                        <div class="p-4 shadow rounded-lg border">
+                                            <apx-chart [series]="getSeries(lmtank.currentNum, lmtank.capacityNum)"
+                                                [chart]="chart" [tooltip]="getTooltip(lastmonthtanks)"
+                                                [plotOptions]="plotOptions" [labels]="[lmtank.name]"
+                                                [colors]="[lmtank.color]">
+                                            </apx-chart>
+                                            <div class="text-center mt-2 text-sm">
+                                                {{ lmtank.currentLabel }} / {{ lmtank.capacityLabel }} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+    <!-- filter -->
+<!-- 
+    <div class="card">
+        <div class="card-body">
+            <h5>Shift Summary</h5>
+            <div class="form-group">
+                <div class="row" style="align-items: end;">
+                    <div class="col-12 col-md-4 col-lg-4">
+                        <label>From Date</label>
+                        <input type="date" class="form-control" [(ngModel)]="fromDate">
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-4">
+                        <label>To Date</label>
+                        <input type="date" class="form-control" [(ngModel)]="toDate">
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-4">
+                        <button class="btn btn-primary" matTooltip='Filter' matTooltipPosition='above'
+                            (click)="filterByDate()">Filter</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Charts -->
+    <!-- <div class="card mt-3">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <apx-chart [series]="chartOptions1.series" [chart]="chartOptions1.chart"
+                        [xaxis]="chartOptions1.xaxis" [title]="chartOptions1.title"
+                        [dataLabels]="chartOptions1.dataLabels"></apx-chart>
+                </div>
+                <div class="col-12 col-md-6">
+                    <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart"
+                        [xaxis]="chartOptions2.xaxis" [title]="chartOptions2.title"
+                        [dataLabels]="chartOptions2.dataLabels" [stroke]="chartOptions2.stroke"></apx-chart>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<!-- <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shift Summary - {{ viewData?.shift_date
+                    }}</h5>
+                <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Date</label>
+                        <div class="form-control">{{ viewData?.shift_date
+                            }}</div>
+                    </div>
+
+                </div>
+
+                <h6 class="mt-4">Fuel Sales</h6>
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                              
+                                <th *ngIf="hint !== 'two'">Shift</th>
+                                <th>Pump No</th>
+                                <th>Fuel Type</th>
+                                <th>Opening</th>
+                                <th>Closing</th>
+                                <th>Sales Qty</th>
+                            
+                                <th>Test Fuel(ltr)</th>
+                                <th>Test Amount</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let fuel of viewData?.fuel_list">
+                                <td *ngIf="hint !== 'two'">{{ fuel.shift }}</td>
+                                <td>{{ fuel.pump_no
+                                    }}</td>
+                                <td>{{ fuel.fuel_type }}</td>
+                                <td>{{ fuel.opening }}</td>
+                                <td>{{ fuel.closing }}</td>
+                                <td>{{ fuel.sales_qty }}</td>
+                           
+                                <td>{{ fuel.test_liters }}</td>
+                                <td>{{ fuel.test_amount }}</td>
+                                <td>{{ fuel.total }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h6>Payments</h6>
+                 
+                        <h6 class="mt-4">Coin Denominations</h6>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Denomination</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of viewData?.coins_denom">
+                                    <td>{{ c.denomination }}</td>
+                                    <td>{{ c.quantity }}</td>
+                                    <td>{{ c.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">Coin: <div class="form-control">{{ viewData?.coins }}</div>
+                        </div>
+       
+                        <h6 class="mt-4">Cash Denominations</h6>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Denomination</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of viewData?.cash_denom">
+                                    <td>{{ c.denomination }}</td>
+                                    <td>{{ c.quantity }}</td>
+                                    <td>{{ c.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">Cash: <div class="form-control">{{ viewData?.cash }}</div>
+                        </div>
+                        <div class="form-group">GPay: <div class="form-control">{{ viewData?.gpay }}</div>
+                        </div>
+                        <div class="form-group">PhonePe: <div class="form-control">{{ viewData?.phonepe
+                                }}</div>
+                        </div>
+                        <div class="form-group">Swiping: <div class="form-control">{{ viewData?.swipping
+                                }}</div>
+                        </div>
+            
+                        <h6 class="mt-4">Customer Credits</h6>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Fuel Type</th>
+                                    <th>Liters</th>
+                                    <th>Rate</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of viewData?.customer_credits">
+                                    <td>{{ c.customer_name }}</td>
+                                    <td>{{ c.fuel_type }}</td>
+                                    <td>{{ c.liters }}</td>
+                                    <td>{{ c.rate }}</td>
+                                    <td>{{ c.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">Credit: <div class="form-control">{{ viewData?.credit
+                                }}</div>
+                        </div>
+                        <div class="form-group">Total: <div class="form-control">{{ viewData?.payment_total
+                                }}</div>
+                        </div>
+                        <div class="form-group">Receipt: <div class="form-control">{{ viewData?.receipt
+                                }}</div>
+                        </div>
+                        <div class="form-group"><strong>Grand Total:</strong>
+                            <div class="form-control"><strong>{{
+                                    viewData?.grand_total_1 }}</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h6>Summary</h6>
+                        <div class="form-group">Fuel Total: <div class="form-control">{{
+                                viewData?.shift_fuel_total
+                                }}
+                            </div>
+                        </div>
+               
+                        <h6 class="mt-4">Oil Products</h6>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total ML</th>
+                                    <th>Liters</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of viewData?.product_entry">
+                                    <td>{{ p.product_name }}</td>
+                                    <td>{{ p.quantity }}</td>
+                                    <td>{{ p.price }}</td>
+                                    <td>{{ p.total_ml }}</td>
+                                    <td>{{ p.liters }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">Oil Sales: <div class="form-control">{{ viewData?.oil_sale
+                                }}</div>
+                        </div>
+                        <h6 class="mt-4">EV Summary</h6>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hours</th>
+                                    <th>Rate</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let e of viewData?.ev_entry">
+                                    <td>{{ e.ev_hours }}</td>
+                                    <td>{{ e.rate }}</td>
+                                    <td>{{ e.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">EV Total: <div class="form-control">{{ viewData?.ev_total
+                                }}</div>
+                        </div>
+                        <div class="form-group">Discount: <div class="form-control">{{ viewData?.discount
+                                }}</div>
+                        </div>
+                        <div class="form-group">Extra Fuel: <div class="form-control">{{ viewData?.extra_fuel }}
+                            </div>
+                        </div>
+                        <div class="form-group"><strong>Grand Total:</strong>
+                            <div class="form-control"><strong>{{
+                                    viewData?.grand_total_2 }}</strong></div>
+                        </div>
+                        <div class="form-group">Difference: <div class="form-control">{{ viewData?.difference }}
+                            </div>
+                        </div>
+                        <div class="form-group">Manual Difference: <div class="form-control">{{
+                                viewData?.manual_difference }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->

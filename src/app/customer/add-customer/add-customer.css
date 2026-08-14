@@ -1,0 +1,153 @@
+.customer-wrapper {
+  max-width: 1100px;
+  margin: auto;
+  font-family: Inter, Arial;
+}
+
+.card {
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+/* .row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+} */
+
+.col {
+  flex: 1;
+}
+
+.inline {
+  display: flex;
+  gap: 8px;
+}
+
+input, select {
+  /* width: 100%; */
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.tabs .active {
+  border-bottom: 2px solid #2563eb;
+  color: #2563eb;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.primary {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+}
+.customerForm-list{
+  display: flex;
+  align-self: center;
+  margin-left: 20px;
+}
+.customerForm-details, .customerForm-list label{display: flex;align-items: center;}
+.customerForm-list label input{margin: 0px 10px;}
+.inline select{width: 50%;}
+.inline label{width: 40%;}
+.form-control{height: 40px;}
+.inline{margin: 20px 0px}
+.customerForm-list input{height: auto;width: auto;}
+.card .btn-group{display: inline-block;padding: 10px;width: 100%;}
+.card .btn-group a{float: right;}
+.customerForm-number-details{display: flex;gap: 8px; width: 50%;}
+@media (max-width: 768px) {
+    .customerForm-details{display: block;}
+    .customerForm-list{margin-left: 0;}
+    .inline{display: block;}
+    .inline select, .inline input{margin-bottom: 10px;}
+    .customerForm-number-details{display: flex;align-items: center;gap: 8px;margin-bottom: 20px;}
+    .inline label{width: 100%;}
+}
+/* ACCORDION */
+.accordion-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.accordion-body {
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* MOBILE STACK */
+@media (max-width: 767px) {
+  .row {
+    flex-direction: column;
+  }
+}
+button.btn.btn-danger{
+  padding: 4px 8px;
+  font-weight: 800;
+  font-size: 12px;
+}
+.btn-apply {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 10px;
+}
+td .customerForm-number-details {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0px;
+}
+td .customerForm-number-details select.form-control{
+  width: 43%;
+  padding: 2px;
+}

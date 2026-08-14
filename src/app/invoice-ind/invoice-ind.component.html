@@ -1,0 +1,127 @@
+<div *ngIf="isLoading" class="loader-overlay">
+  <div class="loader"></div>
+</div>
+<div class="content-section ">
+  <div class="row tittle">
+    <div class="top col-md-5 align-self-center">
+      <h5>Invoice List</h5>
+    </div>
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+        <li class="breadcrumb-item active">Invoice List</li>
+      </ol>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class>
+        <div class="btn-group float-right">
+          <a class="btn btn-primary mb-3" matTooltip='Add Invoice' matTooltipPosition='above'
+            (click)="addInvoiceInd()" *ngIf="userRoles.includes(302)">+
+            Add Invoice</a>
+        </div>
+
+      </div>
+      <div class="userDatatable global-shadow border-0 bg-white w-100">
+        <input type="text" [(ngModel)]="searchQuery" (input)="searchInvoices()" placeholder="Search invoices..."
+          class="form-control searchQuery">
+        <div class="table-responsive">
+          <table id="datatable" class="table mb-0 table-borderless">
+            <thead>
+              <tr class="userDatatable-header">
+                <th>
+                  <span class="userDatatable-title">S.No</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Date</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Invoice </span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Order Number</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Customer Number</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">status</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Due Date</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Amount</span>
+                </th>
+                <th>
+                  <span class="userDatatable-title">Balance Due</span>
+                </th>
+                <th *ngIf="userRoles.includes(301) || userRoles.includes(303) || userRoles.includes(304)">
+                  <span class="userDatatable-title">Action</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let invoice of paginatedList; let i = index"
+                [ngClass]="{ 'status-paid': invoice.chettinad_status === 1}">
+                <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                <td>{{ invoice.date }}</td>
+                <td>{{ invoice.invoice_number }}</td>
+                <td>{{ invoice.invoice_id }}</td>
+                <td>{{ invoice.customer_name }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="{ 'status-warning': invoice.status === 'DRAFT', 'status-success': invoice.status === 'PAID',
+                        'status-danger': invoice.status === 'OVERDUE', 'status-sent': invoice.status === 'SENT'
+                      }">
+                    {{ invoice.status | titlecase }}
+                  </span>
+                </td>
+                <td>{{ invoice.due_date }}</td>
+                <td>
+                  {{ invoice.currency }} {{ invoice.amount }}
+                </td>
+                <td>
+                  {{ invoice.currency }} {{ invoice.balance_due }}
+                </td>
+                <td style="display: flex;"  *ngIf="userRoles.includes(301) || userRoles.includes(303) || userRoles.includes(304)">
+
+                  <a  class="btn btn-info" *ngIf="userRoles.includes(301)"title="Pdf"  [href]="invoice.invoice_pdf_url" target="_blank">
+                    <i class="fa fa-file-pdf" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btn-primary" *ngIf="userRoles.includes(303)" title="Edit"
+                    (click)="editInvoice(invoice.invoice_id)">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btn-danger" *ngIf="userRoles.includes(304)" title="Delete" (click)="confirmDelete(invoice.invoice_id, i)">
+                    <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                  </a>  
+                </td>
+              </tr>
+              <tr *ngIf="filteredInvoiceList.length === 0">
+                <td colspan="12" class="text-center">
+                  <span *ngIf="!showNoPermissionMessage">No invoices found</span>
+                  <span *ngIf="showNoPermissionMessage">No permission to view invoices</span>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+          <!-- Pagination -->
+          <div class="pagination-container" *ngIf="totalPages > 1">
+            <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+
+            <ng-container *ngFor="let page of getVisiblePages()">
+              <button *ngIf="page !== '...'" class="page-btn" (click)="changePage(+page)"
+                [class.active]="currentPage === page">{{ page }}</button>
+              <span *ngIf="page === '...'" class="ellipsis">...</span>
+            </ng-container>
+
+            <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,235 @@
+
+ label {
+  font-weight: 500;
+  /* color: black; */
+  color: #182679!important;
+
+}
+.newEstimatePage .newEstimateHeader {
+  background: linear-gradient(to right, #262127, #54b7aa) !important;
+  padding: 6px 15px !important;   /* smaller padding */
+  min-height: 36px !important;    /* Reduced height */
+  display: flex;
+  align-items: center;
+}
+
+/* Text inside header */
+.newEstimatePage .newEstimateHeader h4,
+.newEstimatePage .newEstimateHeader h5 {
+  color: white !important;
+  margin: 0 !important;       /* Remove extra spacing */
+  font-size: 16px;            /* Optional smaller text */
+  line-height: 1.2;           /* Smaller line height */
+}
+
+/* Anchor Style */
+.newEstimatePage .newEstimateHeader a {
+  color: white !important;
+  font-size: 14px;
+}
+
+
+input.form-control {
+  padding: 4px 8px;
+}
+  
+  .form-control{border:1px solid #e1e1e1;}
+  .ng-autocomplete 
+  ::ng-deep .autocomplete-container .input-container input {
+ 
+    text-align: left;
+    display: block;
+    width: 100%;
+    height: 2.625rem;
+    padding: 0.375rem 1.2rem;
+    /* padding-left: 4px!important; */
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    background-clip: padding-box;
+    /* border: 1px solid #f1f2f6; */
+    border: 1px solid #beeaca;
+    border-radius: 5px;
+    box-shadow: 0 0;
+    color: #495057;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+}
+
+.customer-small select {
+  width: 50% !important;
+  max-width: 32% !important;
+}
+.customer-small .input-group {
+  width: 50% !important;
+}
+
+
+.ng-autocomplete 
+::ng-deep .autocomplete-container .input-container input:focus {
+   border: 1px solid  #3d0096;
+  /* border: 1px solid #009688; */
+  box-shadow: 1px 1px 10px #ededed
+}
+
+
+  .ng-autocomplete 
+  ::ng-deep .autocomplete-container  .input-container input{
+    color: #495057;
+      
+  }
+  .ng-autocomplete 
+  ::ng-deep .autocomplete-container  .input-container {
+    border-width: 0px;
+  }
+ 
+
+  .abc
+::ng-deep .autocomplete-container .input-container input {
+
+  text-align: left;
+  display: block;
+  width: 100%;
+  height: 2.625rem;
+  padding: 0.375rem 1.2rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #f1f2f6;
+
+  border-radius: 5px;
+  /* box-shadow: 0 0;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; */
+  
+}
+
+.ng-autocomplete 
+::ng-deep .ng-autocomplete.ng-autocomplete.ng-pristine.ng-valid.ng-touched{
+  padding: 0px 5px;
+  border: 1px solid #f1f2f6;
+  width: 100%;
+  display: block;
+}
+
+select{
+  /* padding: 0 !important; */
+  padding-left: 4px !important;
+}
+
+.add-contact-table-section .ng-autocomplete .ng-autocomplete.ng-autocomplete.ng-pristine.ng-valid.ng-touched{
+ padding: 0;
+ border: none;
+}
+ .ng-autocomplete 
+ ::ng-deep .autocomplete-container .input-container input{
+   background: transparent;
+ }
+ .ng-autocomplete 
+ ::ng-deep .autocomplete-container .input-container input:focus {
+   outline: none;
+   border: 2px solid transparent!important;
+   background-image: linear-gradient(white, white), linear-gradient(315deg, rgb(236, 160, 255), rgb(170, 178, 255), rgb(132, 255, 201));
+   background-origin: border-box;
+   background-clip: padding-box, border-box;
+   animation: bg-hue 2s linear infinite;
+ }
+
+ 
+
+ .form-control{
+  border: 1px solid #c8c0c0;
+  background: transparent;
+}
+ .form-control:focus {
+  outline: none;
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white), linear-gradient(315deg, rgb(236, 160, 255), rgb(170, 178, 255), rgb(132, 255, 201));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: bg-hue 2s linear infinite;
+}
+
+.addquotation-section .form-control:focus,  .ng-autocomplete 
+::ng-deep .autocomplete-container .input-container input:focus{
+  outline: none;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #ffffff !important;
+  border: 2px solid transparent!important;
+    background-image: linear-gradient(white, white), linear-gradient(315deg, rgb(236, 160, 255), rgb(170, 178, 255), rgb(132, 255, 201));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    animation: bg-hue 2s linear infinite;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #f3d2f0 !important;
+    opacity: 0.6;
+    color: black!important;
+}
+
+ hr{
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: 0;
+  border-top: 1px solid #c1c4d1;
+}
+
+.itemTableHeader{
+    background-color: #6d5dfc;
+    color: white;
+}
+
+.searchIconBtn{
+  background: #6d5dfc;
+  box-shadow: inset 0.2rem 0.2rem 1rem #8abdff, inset -0.2rem -0.2rem 1rem #5b0eeb, 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #ffffff;
+  color: #e4ebf5;
+  border: none;
+  padding: 0px 7px;
+  border-radius: 0px 4px 4px 0px!important;
+  cursor: pointer;
+}
+
+
+
+.upload-input {
+    border: 1px solid #c8c0c0;
+    padding: 5px;
+    border-radius: 5px;
+    width: 182px;
+}
+i.fas.fa-times.delete-icon {
+    padding-left: 8px;
+    color: #db2020;
+}
+.file-item.ng-star-inserted {
+    display: flex;
+    align-items: center;
+}
+.ng-select{width: 75%;}
+
+table .ng-select{width: 100%;display: inline-grid;}
+.fa-map-marker{color:green;margin-right: 5px;}
+.custlocation{
+  border:1px solid #c8c0c0;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+td .btn{
+  margin: 2px;
+  padding: 6px;
+  height: 30px;
+  line-height: 18px;
+}
+@media (min-width: 768px) {
+ .table-responsive{
+  overflow-x: visible;
+}
+}

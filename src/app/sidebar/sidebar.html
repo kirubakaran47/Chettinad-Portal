@@ -1,0 +1,146 @@
+<div class="left side-menu" [class.sidebar-collapsed]="isCollapsed">
+  <button type="button" (click)="toggleMobileMenu()"
+    class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
+    x
+  </button>
+  <div class="sidebar-section">
+    <div class="sidebar-inner niceScrollleft" tabindex="5000">
+      <div class="topbar-left">
+
+        <div class="text-center">
+          <a class="logo">
+            <img src="assets/img/chettinad-link-logo.png" alt class="logo-large">
+          </a>
+          <a class="menu-sidebar-logo">
+            <img src="assets/img/chettinad-link-favicon.png" alt class="logo-large">
+          </a>
+          <!-- <span>Manomaya Energy Petroleum Retail Business</span> -->
+        </div>
+      </div>
+      <div id="sidebar-menu" class="active">
+        <ul>
+          <li *ngIf="userRoles.includes(101)">
+            <a [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect" data-title="Dashboard">
+              <i class="fas fa-home"></i>
+              <span class="menu-label"> Dashboard </span>
+            </a>
+            <ul class="menu-sidebar-item">
+              <li><a [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                  class="waves-effect">Dashboard</a></li>
+            </ul>
+          </li>
+          <!-- user Menu -->
+          <li *ngIf="userRoles.includes(121)">
+            <a [routerLink]="['/userDetails']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect">
+              <i class="fas fa-users"></i>
+              <span> Manage Staff </span>
+            </a>
+            <ul class="menu-sidebar-item">
+              <li><a [routerLink]="['/userDetails']" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }" class="waves-effect"> Manage Staff</a></li>
+            </ul>
+          </li>
+          <li *ngIf="userRoles.includes(301)">
+            <a [routerLink]="['/invoice']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect">
+              <i class="fas fa-file-circle-check"></i>
+              <span>Invoice List </span>
+            </a>
+            <ul class="menu-sidebar-item">
+              <li><a [routerLink]="['/invoice']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                  class="waves-effect">Invoice List</a></li>
+            </ul>
+          </li>
+          <li *ngIf="userRoles.includes(311)">
+            <a [routerLink]="['/Quotation']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect">
+              <i class="fas fa-file"></i>
+              <span>Quotation List </span>
+            </a>
+            <ul class="menu-sidebar-item">
+              <li><a [routerLink]="['/Quotation']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                  class="waves-effect">Quotation List</a></li>
+            </ul>
+          </li>
+
+
+          <!-- Purchase Entry Menu -->
+          <li class="has_sub" *ngIf="userRoles.includes(111) || userRoles.includes(191)"
+            [ngClass]="{ 'nav-active': activeMenu === 'purchaseEntry', 'active': activeMenu === 'purchaseEntry' }">
+            <a href="javascript:void(0)" class="waves-effect" (click)="toggleMenu('purchaseEntry')">
+              <i class="fa fa-receipt"></i>
+              <span> Purchase Entry </span>
+              <span class="float-right"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <ul class="list-unstyled" [style.display]="activeMenu === 'purchaseEntry' ? 'block' : 'none'">
+              <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="userRoles.includes(111)">
+                <a [routerLink]="['/purchaseEntryReport']">Purchase
+                  Entry</a>
+              </li>
+              <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="userRoles.includes(191)">
+                <a [routerLink]="['/expensePurchaseEntryReport']">Expense
+                  Purchase Entry</a>
+              </li>
+            </ul>
+          </li>
+          <!-- srock Menu -->
+          <li *ngIf="userRoles.includes(431)">
+            <a [routerLink]="['/stock']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect">
+              <i class="fa fa-warehouse"></i>
+              <span>Stock Inventory</span>
+            </a>
+            <ul class="menu-sidebar-item">
+              <li><a [routerLink]="['/stock']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect"> Stock Inventory</a></li>
+            </ul>
+          </li>
+          <!-- Product Master -->
+          <li class="has_sub"
+            *ngIf="userRoles.includes(131) || userRoles.includes(151) ||userRoles.includes(171) ||userRoles.includes(181) ||userRoles.includes(201)"
+            [ngClass]="{ 'nav-active': activeMenu === 'productMaster', 'active': activeMenu === 'productMaster' }">
+            <a href="javascript:void(0)" (click)="toggleMenu('productMaster')">
+              <i class="fa fa-archive"></i> <span>Master</span>
+              <span class="float-right"><i class="fas fa-chevron-right"></i></span>
+            </a>
+
+            <ul class="list-unstyled" [style.display]="activeMenu === 'productMaster' ? 'block' : 'none'">
+              <li routerLinkActive="active" *ngIf="userRoles.includes(131)">
+                <a [routerLink]="['/productMaster']">Product Entry</a>
+              </li>
+              <li routerLinkActive="active" *ngIf="userRoles.includes(151)">
+                <a [routerLink]="['/vendorList']">Vendor Manage</a>
+              </li>
+              <!-- <li [class.active]="isCustomerManageActive()"
+                *ngIf="userRoles.includes(171)">
+                <a [routerLink]="['/customerManage']">Customer Manage</a>
+              </li> -->
+              <li routerLinkActive="active" *ngIf="userRoles.includes(181)">
+                <a [routerLink]="['/taxDetails']">Tax Details</a>
+              </li>
+              <li routerLinkActive="active" *ngIf="userRoles.includes(201)">
+                <a [routerLink]="['/expenseProduct']">Expense Details</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Setting -->
+          <li>
+            <a [routerLink]="['/settings']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+              class="waves-effect">
+              <i class="fas fa-gear"></i>
+              <span> Settings </span>
+            </a>
+            <ul class="menu-sidebar-item">
+              <li><a [routerLink]="['/settings']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                  class="waves-effect"> Settings</a></li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+</div>

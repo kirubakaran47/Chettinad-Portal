@@ -1,0 +1,472 @@
+<div *ngIf="isLoading" class="loader-overlay">
+  <div class="loader"></div>
+</div>
+<div class="content-section ">
+  <div class="row tittle">
+    <div class="top col-md-5 align-self-center">
+      <h5>Add Quotation </h5>
+    </div>
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+        <li class="breadcrumb-item active">Add Quotation </li>
+      </ol>
+    </div>
+  </div>
+  <div class="card-body">
+
+
+
+    <form [formGroup]="estimateForm">
+
+      <!-- CARD HEADER -->
+      <div class="card mb-3">
+        <div class="newEstimatePage">
+          <div class="card-header newEstimateHeader">
+            <h4>New Estimate</h4>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+
+            <!-- Customer Name -->
+            <div class="col-md-12 mb-3">
+              <label>Customer Name <span class="text-danger">*</span></label>
+
+
+              <div class="d-flex align-items-center justify-content-between">
+
+                <!-- LEFT : Customer Dropdown (unchanged) -->
+                <div class="input-group customer-small">
+                  <select #customerSelect formControlName="customerName" class="form-control"
+                    (change)="onCustomerSelect(customerSelect.value)">
+                    <option value="">Select or add a customer</option>
+                    <option *ngFor="let cust of customerList" [value]="cust.customer_id">
+                      {{ cust.customer_name }}
+                    </option>
+                  </select>
+
+                  <div class="input-group-append">
+                    <button class="btn searchIconBtn" type="button">
+                      <i class="fas fa-search"></i>
+                    </button>
+                    <span *ngIf="customerDetails?.currency_code" class="custlocation">
+                      <i class="fa fa-map-marker"></i> {{customerDetails?.currency_code}}</span>
+                  </div>
+                </div>
+
+                <!-- RIGHT : Currency Badge -->
+                <!-- <div class="currency-badge ml-3" *ngIf="customerDetails">
+    <i class="fa fa-map-marker"></i> {{ currencyCode }}
+  </div> -->
+
+              </div>
+
+
+              <div class="customer-info-container" *ngIf="customerDetails">
+
+                <div class="row">
+                  <!-- BILLING ADDRESS -->
+                  <div class="col-md-4">
+                    <h6 style="font-size:14px"><strong>Billing Address</strong></h6>
+
+                    <p class="address-text">
+                      {{ billingAddress?.address }}<br>
+                      {{ billingAddress?.street2 }}<br>
+                      {{ billingAddress?.city }}<br>
+                      {{ billingAddress?.state }} {{ billingAddress?.zip }}<br>
+                      {{ billingAddress?.country }}<br>
+                      <strong>Phone:</strong> {{ billingAddress?.phone }}
+                    </p>
+                    <div class="mt-2" style="display: flex;align-items: center;margin-bottom: 20px;">
+                      <label>Place of Supply<span class="text-danger">*</span></label>
+                      <select class="form-control ml-2" formControlName="placeOfSupply" style="width: 250px;">
+
+                        <option value="">Select State</option>
+                        <option *ngFor="let state of stateList" [value]="state">
+                          {{ state }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- SHIPPING ADDRESS -->
+                  <div class="col-md-4">
+                    <div *ngIf="customerDetails?.shipping_address" class="mt-3 customer-details">
+                      <div *ngIf="customerDetails.shipping_address.address">
+                        <h6 style="font-size:14px"><strong>Shipping Address</strong></h6>
+                        <p>
+                          <span>{{ customerDetails.shipping_address.address }}</span><br>
+                          <span *ngIf="customerDetails.shipping_address.street2 ">{{
+                            customerDetails.shipping_address.street2 }} <br></span>
+                          <span>{{ customerDetails.shipping_address.city }}</span><br>
+                          <span>{{ customerDetails.shipping_address.state }} - </span>
+                          <span>{{ customerDetails.shipping_address.zip }}</span><br>
+                          <span>{{ customerDetails.shipping_address.country }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- GST -->
+                <div class="gst-section mt-2">
+                  <h6 style="margin: 0;font-size:14px"><strong>GST Treatment</strong><span
+                      style="margin:0px 5px;">:</span>
+                  </h6>
+                  {{ gstTreatment }}
+                  <!-- <i class="fa fa-pencil edit-icon"></i> -->
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Estimate -->
+            <div class="col-md-4 mb-3">
+              <label>Estimate#<span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="estimateNo">
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Reference#</label>
+              <input class="form-control" formControlName="referenceNo">
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Estimate Date <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" formControlName="estimateDate">
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Expiry Date</label>
+              <input type="date" class="form-control" formControlName="expiryDate">
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Salesperson</label>
+              <select class="form-control" formControlName="salesperson">
+
+                <option value="">Select Salesperson</option>
+                <option *ngFor="let salesperson of salespersonList" [value]="salesperson.salesperson_name">
+                  {{ salesperson.salesperson_name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label>Project Name</label>
+              <select class="form-control" formControlName="projectName">
+                <option value="" selected>Select a project</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM TABLE -->
+      <div class="card mt-3">
+        <div class="newEstimatePage">
+          <div class="card-header bg-white d-flex justify-content-between newEstimateHeader">
+            <h5>Item Table</h5>
+            <a href="/" class="text-primary">Bulk Actions</a>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+
+          <table class="table table-bordered">
+            <thead class="itemTableHeader">
+              <tr>
+                <th style="width: 30%">Item Details</th>
+                <th>Quantity</th>
+                <th>Rate ₹</th>
+                <th>Discount</th>
+                <th>Tax</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody formArrayName="items">
+              <tr *ngFor="let row of itemsArray.controls; let i = index" [formGroupName]="i">
+
+                <!-- <td><input class="form-control" formControlName="itemDetails"></td> -->
+                <td class="position-relative item-cell">
+
+                  <input #itemInput class="form-control" formControlName="itemDetails"
+                    placeholder="Type or click to select an item" (input)="searchZohoItems(itemInput.value, i)"
+                    (click)="searchZohoItems(itemInput.value, i)" />
+
+                  <!-- ITEM SUGGESTION DROPDOWN -->
+                  <div class="item-suggestion-box" *ngIf="itemSuggestions.length && activeItemRowIndex === i">
+                    <div class="item-row" *ngFor="let item of itemSuggestions" (click)="selectItem(item, i)">
+                      <!-- IMAGE -->
+                      <div class="item-image">
+                        <img *ngIf="item.image_document_id; else noImg" [src]="getItemImage(item)" />
+                        <ng-template #noImg>
+                          <i class="fa fa-image"></i>
+                        </ng-template>
+                      </div>
+
+                      <!-- DETAILS -->
+                      <div class="item-details">
+                        <div class="item-name">{{ item.name }}</div>
+
+                        <!-- <div class="item-desc" *ngIf="item.description">
+                          {{ item.description }}
+                        </div> -->
+
+                        <div class="item-meta">
+                          <span class="badge"
+                            [ngClass]="item.product_type === 'service' ? 'badge-success' : 'badge-primary'">
+                            {{ item.product_type | uppercase }}
+                          </span>
+
+                          <span class="sac" *ngIf="item.hsn_or_sac">
+                            SAC: {{ item.hsn_or_sac }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <textarea *ngIf="itemsArray.at(i).get('itemDetails')?.value" class="form-control mt-2"
+                    formControlName="description" rows="2" placeholder="Item description">
+                  </textarea>
+                </td>
+
+                <td><input type="number" class="form-control" formControlName="quantity"
+                    (input)="calculateRowAmount(i)"></td>
+
+                <td><input type="number" class="form-control" formControlName="rate" (input)="calculateRowAmount(i)">
+                </td>
+
+                <td>
+
+                  <div style="display: flex;align-items: center;">
+                    <input type="number" class="form-control" formControlName="discount"
+                      (input)="calculateRowAmount(i)">
+                    <select class="form-control ms-1" formControlName="discountType" (change)="calculateRowAmount(i)"
+                      style="max-width:30%">
+                      <option value="amount">₹</option>
+                      <option value="percentage">%</option>
+                    </select>
+                  </div>
+                </td>
+
+                <td>
+
+                  <select class="form-control" formControlName="tax" (change)="onTaxChange(i)">
+                    <option value="" selected>Select Tax</option>
+                    <option *ngFor="let tax of itemsTaxOptions[i]" [value]="tax.tax_id">
+                      {{ tax.tax_name }} ({{ tax.tax_percentage }}%)
+                    </option>
+                  </select>
+                </td>
+
+                <!-- <td>{{ row.value.rate * row.value.quantity - row.value.discount }}</td> -->
+                <td>{{ row.get('amount')?.value | number:'1.2-2' }}</td>
+                <td class="text-center">
+                  <i class="fas fa-times text-danger" style="cursor:pointer" (click)="deleteRow(i)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Add New Row button -->
+          <button type="button" (click)="addNewRow()" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-plus"></i> Add New Row
+          </button>
+
+          <!-- Bulk Add button -->
+          <button type="button" (click)="addBulkRows()" class="btn btn-outline-secondary btn-sm ml-2">
+            <i class="fas fa-table"></i> Add Items in Bulk
+          </button>
+
+        </div>
+
+        <!--  -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <label>Customer Notes</label>
+                <textarea class="form-control" rows="4" formControlName="customerNotes"></textarea>
+              </div>
+
+
+              <div class="col-md-6">
+
+                <div class="p-3 rounded" style="border: 1px solid #00000083 !important;">
+
+                  <div class="d-flex justify-content-between mb-2">
+                    <span style="color: #182679!important;font-weight:500">Sub Total</span>
+                    <span>{{ subTotal | number:'1.2-2' }}</span>
+                  </div>
+
+                  <div *ngFor="let tax of taxSummary" class="d-flex justify-content-between">
+                    <span>{{ tax.type }} ({{ tax.percent }}%)</span>
+                    <span>{{ tax.amount | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2" *ngIf="estimateForm.get('taxType')?.value === 'TCS'">
+                    <span>Adjustment</span>
+                    <input formControlName="adjustment" type="number" class="form-control"
+                      style="width:148px;margin-left:38px">
+                    <span class="ml-auto">
+                      {{ adjustment?.value || 0 }}
+                    </span>
+                  </div>
+
+                  <div class="d-flex align-items-center mb-2">
+                    <input type="radio" value="TDS" formControlName="taxType"> TDS
+
+                    <input class="ml-3" type="radio" value="TCS" formControlName="taxType"> TCS
+                    <select class="form-control ml-3" style="width: 150px;" formControlName="tds"
+                      (change)="calculateSubTotal()">
+                      <option value="">Select a Tax</option>
+
+                      <ng-container *ngIf="estimateForm.get('taxType')?.value === 'TDS'">
+                        <option *ngFor="let tds of tdsList" [ngValue]="tds">
+                          {{ tds.tax_name }} ({{ tds.section }} - {{ tds.tax_percentage }}%)
+                        </option>
+                      </ng-container>
+                    </select>
+
+                    <span class="ml-auto" style="color: #5e5959;" *ngIf="estimateForm.get('taxType')?.value === 'TDS'">
+                      - {{ tdsAmount | number:'1.2-2' }}
+                    </span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2" *ngIf="estimateForm.get('taxType')?.value === 'TDS'">
+                    <span>Adjustment</span>
+                    <input formControlName="adjustment" type="number" class="form-control"
+                      style="width:148px;margin-left:38px">
+                    <span class="ml-auto">
+                      {{ adjustment?.value || 0 }}
+                    </span>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between font-weight-bold">
+                    <span>Grand Total (₹)</span>
+                    <span>{{ grandTotal | number:'1.2-2' }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card-body attachment-section">
+
+            <div class="row">
+              <!-- Terms & Conditions -->
+              <div class="col-md-6">
+                <label class="section-title">Terms & Conditions</label>
+                <textarea class="form-control terms-textarea" rows="4" placeholder="Enter terms & conditions"
+                  formControlName="termsAndConditions"></textarea>
+              </div>
+
+              <!-- File Upload -->
+              <div class="col-md-6">
+                <label class="section-title">Attach File(s) to Estimate</label>
+
+                <!-- Clickable input -->
+                <div class="upload-input" (click)="fileInput.click()">
+                  <span *ngIf="files.length === 0" class="placeholder">
+                    Click to upload files
+                  </span>
+                  <span *ngIf="files.length > 0" class="selected-count">
+                    {{ files.length }} file(s) selected
+                  </span>
+                </div>
+
+                <input #fileInput type="file" hidden multiple (change)="onFileSelect($event)" />
+
+                <small class="text-muted hint">
+                  Maximum 5 files. 10MB each
+                </small>
+
+                <!-- Selected files list -->
+                <div class="file-list" *ngIf="files.length > 0">
+                  <div class="file-item" *ngFor="let file of files; let i = index">
+                    <span class="file-name">{{ file.name }}</span>
+                    <i class="fas fa-times delete-icon" (click)="removeFile(i)"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- <div class="card-body">
+
+      <h5>Terms & Conditions</h5>
+      <p>
+        Offline Payment <br>
+        Bank Name : ICICI BANK Ltd
+      </p>
+
+      <label>Attach File(s) to Estimate</label>
+      <div class="input-group">
+        <input disabled class="form-control" placeholder="Upload File">
+        <div class="input-group-append">
+          <button class="btn btn-primary">
+            <i class="fas fa-upload"></i>
+          </button>
+        </div>
+      </div>
+      <small class="text-muted">You can upload a maximum of 5 files, 10MB each</small>
+
+    </div> -->
+        </div>
+
+        <div class="card-body text-right">
+
+          <!-- Save -->
+          <button type="button" class="btn btn-success mr-2" (click)="onSave()">
+            Save
+          </button>
+
+          <!-- Cancel -->
+          <button type="button" class="btn btn-secondary" (click)="onCancel()">
+            Cancel
+          </button>
+
+        </div>
+      </div>
+
+
+
+      <!-- ====================== ACTION BUTTONS ====================== -->
+      <!-- <div class="card mt-4 mb-4">
+    
+  </div> -->
+
+    </form>
+
+    <!-- ====================== TERMS + FILE UPLOAD ====================== -->
+    <!-- <div class="card mt-4 mb-5">
+    <div class="card-body">
+
+      <h5>Terms & Conditions</h5>
+      <p>
+        Offline Payment <br>
+        Bank Name : ICICI BANK Ltd
+      </p>
+
+      <label>Attach File(s) to Estimate</label>
+      <div class="input-group">
+        <input disabled class="form-control" placeholder="Upload File">
+        <div class="input-group-append">
+          <button class="btn btn-primary">
+            <i class="fas fa-upload"></i>
+          </button>
+        </div>
+      </div>
+      <small class="text-muted">You can upload a maximum of 5 files, 10MB each</small>
+
+    </div>
+  </div> -->
+  </div>
+  <!-- </div> -->
+</div>

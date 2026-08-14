@@ -1,0 +1,259 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Product Master</h5>
+        </div>
+        <div class="col-md-7  align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a
+                        href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Product Master</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="btn-group" *ngIf="userRoles.includes(132)">
+                <button class="btn btn-primary mb-3"
+                    (click)="openaddProductModal()" matTooltip='Add Product'
+                    matTooltipPosition='above'>
+                    Add Product
+                </button>
+            </div>
+            <div class="product-container">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3"
+                        *ngFor="let product of products; let i = index">
+                        <div class="product-card card">
+                            <div class="card-body">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox"
+                                        class="form-check-input"
+                                        [id]="'checkbox' + i"
+                                        [checked]="product.selected"
+                                        (change)="onProductCheckChange($event, product, i)">
+                                    <label class="form-check-label"
+                                        [for]="'checkbox' + i">Select</label>
+                                </div>
+                                <img [src]="product.image_url"
+                                    [alt]="product.name" class="product-img" />
+                                <h3>{{ product.name }}</h3>
+                                  
+                                <div class="product-card-content">
+                                    <!-- <p ><strong>Quantity: </strong>{{ product.qty }}</p> -->
+                                      <p style="text-align: left;"><strong>Brand: </strong>{{ product.brand }}</p>
+                                    <p style="text-align: right;"><strong>Price: </strong>₹{{ product.price }}/{{
+                                        product.unit }}</p>
+                                </div>
+                                <div class="product-btn">
+                                    <button class="btn btn-sm btn-warning"
+                                        (click)="openEditModal(i)"
+                                        matTooltip='Edit'
+                                        matTooltipPosition='above'
+                                        *ngIf="userRoles.includes(133)"> <i
+                                            class="fa fa-edit"
+                                            aria-hidden="true"></i></button>
+                                    <button class="btn btn-sm btn-danger"
+                                        (click)="deleteProduct(i)"
+                                        matTooltip='Delete'
+                                        matTooltipPosition='above'
+                                        *ngIf="userRoles.includes(134)"><i
+                                            class="fa fa-trash-alt"
+                                            aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1"
+    aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add New
+                        Product</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close" (click)="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-control"
+                            formControlName="name">
+                        <div
+                            *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+                            class="text-danger">
+                            Product Name
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Brand</label>
+                        <input type="text" class="form-control"
+                            formControlName="brand">
+                        <div
+                            *ngIf="productForm.get('brand')?.invalid && productForm.get('brand')?.touched"
+                            class="text-danger">
+                            Product Brand
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="number" class="form-control"
+                            formControlName="price">
+                        <div
+                            *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+                            class="text-danger">
+                            Product Price
+                        </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-control"
+                            formControlName="qty">
+                        <div
+                            *ngIf="productForm.get('qty')?.invalid && productForm.get('qty')?.touched"
+                            class="text-danger">
+                            Product Quantity
+                        </div>
+                    </div> -->
+                    <div class="mb-3">
+                        <label class="form-label">Liters</label>
+                        <input type="text" class="form-control"
+                            formControlName="liters">
+                        <div
+                            *ngIf="productForm.get('liters')?.invalid && productForm.get('liters')?.touched"
+                            class="text-danger">
+                            Product Liters
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Unit</label>
+                        <input type="text" class="form-control"
+                            formControlName="unit">
+                        <div
+                            *ngIf="productForm.get('unit')?.invalid && productForm.get('unit')?.touched"
+                            class="text-danger">
+                            Product Unit
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Product Image</label>
+                        <input type="file" class="form-control"
+                            formControlName="product_img"
+                            (change)="onImageChange($event)">
+                        <div
+                            *ngIf="productForm.get('product_img')?.invalid && productForm.get('product_img')?.touched"
+                            class="text-danger">
+                            Product Image
+                        </div>
+                    </div>
+
+                    <div *ngIf="preview">
+                        <p>Image Preview:</p>
+                        <img [src]="preview" alt="Preview" class="img-fluid"
+                            style="max-height: 150px;">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary"
+                        (click)="closeModal()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1"
+    aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form (ngSubmit)="updateProduct()" #editForm="ngForm"
+            class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Edit
+                    Product</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close" (click)="closeEditModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editProduct.name" name="name" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editProduct.brand" name="brand" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input type="number" class="form-control"
+                        [(ngModel)]="editProduct.price" name="price" required />
+                </div>
+                <!-- <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" class="form-control"
+                        [(ngModel)]="editProduct.qty" name="qty" required />
+                </div> -->
+                <div class="mb-3">
+                    <label class="form-label">Liters</label>
+                    <input type="number" class="form-control"
+                        [(ngModel)]="editProduct.liters" name="liters"
+                        required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Unit</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editProduct.unit" name="unit" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Product Image URL</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editProduct.image"
+                        placeholder="Enter image URL" name="imageUrl" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Or Upload Image File</label>
+                    <input type="file" class="form-control"
+                        (change)="onEditImageChange($event)" />
+                </div>
+
+                <div>
+                    <p>Image Preview:</p>
+                    <img [src]="editImagePreview" alt="Image Preview"
+                        class="img-fluid" style="max-height: 150px" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-secondary"
+                    (click)="closeEditModal()">Close</button>
+            </div>
+        </form>
+
+    </div>
+</div>

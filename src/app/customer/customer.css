@@ -1,0 +1,39 @@
+.card .btn-group{display: inline-block;padding: 10px;width: 100%;}
+.card .btn-group a{float: right;}
+
+/* PAID → Success */
+.status-success {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+/* Draft → Warning  */
+.status-warning {
+  background-color: #fff3cd;
+  color: #c68700;
+}
+
+/* OVERDUE → Danger */
+.status-danger {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+/* SENT → Info */
+.status-sent {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+.status-badge {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+}
+td .btn{
+  margin: 2px;
+  padding: 6px;
+  height: 30px;
+  line-height: 18px;
+}

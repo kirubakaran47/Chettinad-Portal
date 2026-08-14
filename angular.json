@@ -1,0 +1,110 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "chettinad-portal": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+        "builder": "@angular-devkit/build-angular:browser",
+        "options": {
+          "outputPath": "dist/chettinad-portal",
+          "index": "src/index.html",
+          "main": "src/main.ts", 
+           "polyfills": [
+              "zone.js"
+            ],
+          "tsConfig": "tsconfig.app.json",
+          "aot": true, 
+          "assets": [
+            "src/favicon.ico", 
+            "src/assets", 
+            {
+              "glob": "**/*",
+              "input": "public",
+              "output": "/"
+            }
+          ],
+            "styles": [
+              "src/custom-theme.scss",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "src/styles.css",
+              "src/assets/css/dataTables.bootstrap4.min.css"
+            ],
+            "scripts": [
+              "src/assets/js/jquery.dataTables.min.js",
+              "src/assets/js/dataTables.bootstrap4.min.js",
+              "src/assets/js/app.js"
+
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "chettinad-portal:build:production"
+            },
+            "development": {
+              "buildTarget": "chettinad-portal:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

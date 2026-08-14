@@ -1,0 +1,161 @@
+<div class="content-section">
+  <div class="row tittle">
+    <div class="top col-md-5 align-self-center">
+      <h5>Stock Sales</h5>
+    </div>
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+        <li class="breadcrumb-item active">Stock Sales</li>
+      </ol>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h2>Stock Inventory</h2>
+
+      <div class="filter-bar">
+        <input [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" placeholder="Search by stock name" />
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <!-- <th (click)="sortBy('product_name')">Product Name</th>
+            <th (click)="sortBy('purchased_qty')">Quantity</th>
+            <th (click)="sortBy('closing_stock_qty')">Closing Quantity</th>
+            <th (click)="sortBy('sold_qty')">Sold Quantity</th> -->
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Remaining Quantity</th>
+            <th>Sold Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stock of paginatedStocks; let i = index">
+            <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+            <td>{{ stock.product_name }}</td>
+            <td>{{ stock.purchased_qty }}</td>
+            <td>{{ stock.closing_stock_qty }}</td>
+            <td>{{ stock.sold_qty }}</td>
+            <td [ngClass]="{
+          'status-in-stock': getStockStatus(stock.closing_stock_qty) === 'In Stock',
+          'status-low-stock': getStockStatus(stock.closing_stock_qty) === 'Low Stock',
+          'status-out-of-stock': getStockStatus(stock.closing_stock_qty) === 'Out of Stock'
+        }">
+              {{ getStockStatus(stock.closing_stock_qty) }}
+            </td>
+            <td>
+               <a class="btn btn-primary" title='View' (click)="viewStockOutPopup(stock)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </a>
+              <a class="btn btn-primary" title='Stock Out' (click)="openStockOutPopup(stock)">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="paginatedStocks.length === 0">
+          <tr>
+            <td colspan="3" class="no-results">No products found.</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+        <span *ngFor="let page of totalPagesArray" (click)="goToPage(page)" [class.active]="page === currentPage">
+          {{ page }}
+        </span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Modal -->
+
+
+<div class="modal fade" id="showStockOutPopup" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProductModalLabel">Stock Out</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" [(ngModel)]="stockOutDate" name="stockOutDate" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" [(ngModel)]="stockOutQty" name="stockOutQty" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Remark</label>
+            <textarea [(ngModel)]="stockOutRemark" name="stockOutRemark" class="form-control">
+            </textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" (click)="submitStockOut()">Submit</button>
+          <button type="reset" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- view Popup Modal -->
+<div class="modal fade" id="viewStockOutPopup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Stock Out History</h5>
+        <button type="button" class="close" (click)="closeViewModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Date</th>
+              <th>Quantity</th>
+              <th>Remark</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of stockOutList; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.stock_out_date }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ item.remarks }}</td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="stockOutList.length === 0">
+            <tr>
+              <td colspan="4" class="text-center">No stock out records</td>
+            </tr>
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+</div>

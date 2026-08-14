@@ -1,0 +1,139 @@
+
+.login-form {
+
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+}
+.logo img {
+  width: 150px;
+  margin-bottom: 20px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+.form-group{
+    margin-bottom: 10px;
+}
+label {
+  text-align: left;
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+}
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100%;
+}
+input[type="email"], input[type="password"] {
+  width: 100%;
+}
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0px;
+}
+.remember-me label {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+.sign-in-btn {
+  background-color: #ed6e3d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.sign-in-btn:hover {
+  background-color: #0d71b9;
+}
+footer p{
+  margin: 20px 0 0; 
+  font-size: 12px;
+  color: #555;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: calc(100% ); /* Adjust the width to leave space for the eye icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.eye-icon i {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.eye-icon:focus {
+  outline: none;
+}
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #007bff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+@media (max-width: 991px) {
+  .login-box, .login-form{width: 100%;}
+  .row{margin-right: 0;margin-left: 0;}
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+
+}

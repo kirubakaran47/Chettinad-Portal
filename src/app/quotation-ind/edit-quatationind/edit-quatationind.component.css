@@ -1,0 +1,446 @@
+label {
+  font-weight: 500;
+  /* color: black; */
+  color: #182679!important;
+
+}
+
+/* .newEstimateHeader {
+  background: linear-gradient(to right, #262127, #54b7aa);
+  padding: 12px 20px !important;
+  min-height: 44px;
+  h4, h5 {
+    color: white;
+    margin-top: 5px;
+  }
+
+  a {
+    color: white !important;
+  }
+} */
+
+/* Scope all Estimate header styles inside this wrapper */
+.newEstimatePage .newEstimateHeader {
+  background: linear-gradient(to right, #262127, #54b7aa) !important;
+  padding: 6px 15px !important;   /* smaller padding */
+  min-height: 36px !important;    /* Reduced height */
+  display: flex;
+  align-items: center;
+}
+
+/* Text inside header */
+.newEstimatePage .newEstimateHeader h4,
+.newEstimatePage .newEstimateHeader h5 {
+  color: white !important;
+  margin: 0 !important;       /* Remove extra spacing */
+  font-size: 16px;            /* Optional smaller text */
+  line-height: 1.2;           /* Smaller line height */
+}
+
+/* Anchor Style */
+.newEstimatePage .newEstimateHeader a {
+  color: white !important;
+  font-size: 14px;
+}
+
+.customer-small select {
+  width: 100% !important;
+  max-width: 50% !important;
+}
+.customer-small select.form-control{height: 42px;}
+.customer-small .input-group {
+  width: 50% !important;
+}
+
+
+input.form-control {
+  padding: 4px 8px;
+}
+  
+  .form-control{border:1px solid #e1e1e1;}
+  .ng-autocomplete 
+  ::ng-deep .autocomplete-container .input-container input {
+    text-align: left;
+    display: block;
+    width: 100%;
+    height: 2.625rem;
+    padding: 0.375rem 1.2rem;
+    /* padding-left: 4px!important; */
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    background-clip: padding-box;
+    /* border: 1px solid #f1f2f6; */
+    border: 1px solid #beeaca;
+    border-radius: 5px;
+    box-shadow: 0 0;
+    color: #495057;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+}
+
+
+
+.ng-autocomplete 
+::ng-deep .autocomplete-container .input-container input:focus {
+   border: 1px solid  #3d0096;
+  /* border: 1px solid #009688; */
+  box-shadow: 1px 1px 10px #ededed
+}
+
+
+  .ng-autocomplete 
+  ::ng-deep .autocomplete-container  .input-container input{
+    color: #495057;
+      
+  }
+  .ng-autocomplete 
+  ::ng-deep .autocomplete-container  .input-container {
+    border-width: 0px;
+  }
+ 
+
+  .abc
+::ng-deep .autocomplete-container .input-container input {
+
+  text-align: left;
+  display: block;
+  width: 100%;
+  height: 2.625rem;
+  padding: 0.375rem 1.2rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #f1f2f6;
+
+  border-radius: 5px;
+  /* box-shadow: 0 0;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; */
+  
+}
+
+.ng-autocomplete 
+::ng-deep .ng-autocomplete.ng-autocomplete.ng-pristine.ng-valid.ng-touched{
+  padding: 0px 5px;
+  border: 1px solid #f1f2f6;
+  width: 100%;
+  display: block;
+}
+
+select{
+  /* padding: 0 !important; */
+  padding-left: 4px !important;
+}
+
+.add-contact-table-section .ng-autocomplete .ng-autocomplete.ng-autocomplete.ng-pristine.ng-valid.ng-touched{
+ padding: 0;
+ border: none;
+}
+ .ng-autocomplete 
+ ::ng-deep .autocomplete-container .input-container input{
+   background: transparent;
+ }
+ .ng-autocomplete 
+ ::ng-deep .autocomplete-container .input-container input:focus {
+   outline: none;
+   border: 2px solid transparent!important;
+   background-image: linear-gradient(white, white), linear-gradient(315deg, rgb(236, 160, 255), rgb(170, 178, 255), rgb(132, 255, 201));
+   background-origin: border-box;
+   background-clip: padding-box, border-box;
+   animation: bg-hue 2s linear infinite;
+ }
+
+ 
+
+ .form-control{
+  border: 1px solid #c8c0c0;
+  background: transparent;
+}
+ .form-control:focus {
+  outline: none;
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white), linear-gradient(315deg, rgb(236, 160, 255), rgb(170, 178, 255), rgb(132, 255, 201));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: bg-hue 2s linear infinite;
+}
+
+.addquotation-section .form-control:focus,  .ng-autocomplete 
+::ng-deep .autocomplete-container .input-container input:focus{
+  outline: none;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #ffffff !important;
+  border: 2px solid transparent!important;
+    background-image: linear-gradient(white, white), linear-gradient(315deg, rgb(236, 160, 255), rgb(170, 178, 255), rgb(132, 255, 201));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    animation: bg-hue 2s linear infinite;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #f3d2f0 !important;
+    opacity: 0.6;
+    color: black!important;
+}
+
+ hr{
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: 0;
+  border-top: 1px solid #c1c4d1;
+}
+
+.itemTableHeader{
+    background-color: #6d5dfc;
+    color: white;
+}
+
+.searchIconBtn{
+  background: #6d5dfc;
+  box-shadow: inset 0.2rem 0.2rem 1rem #8abdff, inset -0.2rem -0.2rem 1rem #5b0eeb, 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #ffffff;
+  color: #e4ebf5;
+  border: none;
+  padding: 0px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.attachment-section {
+  padding: 20px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.terms-textarea {
+  resize: none;
+  font-size: 14px;
+}
+
+/* Upload input */
+.upload-input {
+  border: 1px dashed #cbd5e1;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  background: #f9fafb;
+  transition: 0.2s;
+}
+
+.upload-input:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.placeholder {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.selected-count {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* File list */
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  background: #fff;
+}
+
+.file-name {
+  font-size: 13px;
+  color: #374151;
+  max-width: 85%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-icon {
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.delete-icon:hover {
+  color: #b91c1c;
+}
+
+
+/*  */
+.customer-info-container {
+  /* border-top: 1px solid #eee; */
+  padding-top: 15px;
+}
+
+.section-title {
+  font-size: 13px;
+  color: #6c757d;
+  /* color: #182679; */
+  font-weight: 600;
+}
+
+.address-text {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.edit-icon {
+  font-size: 12px;
+  color: #4a90e2;
+  cursor: pointer;
+}
+
+
+.new-address {
+  color: #4a90e2;
+  font-size: 14px;
+}
+
+.customer-small {
+  width: 100%;
+}
+
+.currency-badge {
+  border: 1px solid #e0e0e0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.currency-badge .fa-map-marker {
+  width: 8px;
+  height: 17px;
+  color: #28a745;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Items */
+.list-group-item {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.list-group-item:hover {
+  background-color: #f5f5f5;
+}
+
+.item-suggestion-box {
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.item-row {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.item-row:hover {
+  background-color: #f5f7fa;
+}
+
+.item-image {
+  width: 40px;
+  height: 40px;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.item-desc {
+  font-size: 12px;
+  color: #666;
+  white-space: pre-line;
+}
+
+.item-meta {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.badge-success {
+  background: #28a745;
+}
+
+.badge-primary {
+  background: #007bff;
+}
+
+.sac {
+  margin-left: 10px;
+  color: #007bff;
+}
+.fa-map-marker{color:green;margin-right: 5px;}
+.custlocation{
+  border:1px solid #c8c0c0;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+ .table-responsive{
+  overflow-x: visible;
+}
+
+}

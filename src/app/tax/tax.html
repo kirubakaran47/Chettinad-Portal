@@ -1,0 +1,105 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Tax Detsils(INR)</h5>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Tax Detsils</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tax</th>
+                                <th>Percentage</th>
+                                <!-- <th>Status</th> -->
+                                <th *ngIf="userRoles.includes(183) || userRoles.includes(184)">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- List of saved rows -->
+                            <tr *ngFor="let tax of taxList; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ tax.tax }}</td>
+                                <td>{{ tax.percentage }}%</td>
+                                <!-- <td>{{ tax.status === 1 ? 'Active' : 'Inactive' }}</td> -->
+                                <td *ngIf="userRoles.includes(183) || userRoles.includes(184)">
+                                    <a class="btn btn-primary" *ngIf="userRoles.includes(183)" matTooltip='Edit'
+                                        matTooltipPosition='above' (click)="editTaxDetails(i)">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="btn btn-danger" *ngIf="userRoles.includes(184)" matTooltip='Delete'
+                                        matTooltipPosition='above' (click)="deleteTaxdetsils(i)">
+                                        <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="userRoles.includes(182)">
+
+                                <tr>
+                                    <td colspan="12" style="background: #dfeef6;color: #2D3B48;">New
+                                        Tax Record</td>
+                                </tr>
+                                <tr *ngFor="let row of rows; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>
+                                        <input type="text" [(ngModel)]="row.tax" class="form-control" />
+                                        <div *ngIf="row.errors?.tax" class="text-danger small">{{
+                                            row.errors.tax }}</div>
+                                    </td>
+                                    <td>
+                                        <input type="number" [(ngModel)]="row.percentage" class="form-control" />
+                                        <div *ngIf="row.errors?.percentage" class="text-danger small">{{
+                                            row.errors.percentage }}
+                                        </div>
+                                    </td>
+                                    <!-- <td>
+                                    <select [(ngModel)]="row.status" class="form-control">
+                                        <option value="" disabled>Select Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Inactive</option>
+                                    </select>
+                                    <div *ngIf="row.errors?.status" class="text-danger small">{{ row.errors.status
+                                        }}</div>
+                                </td> -->
+                                    <td>
+                                        <button *ngIf="!isEditMode && rows.length > 1"
+                                            class="btn btn-danger btn-sm me-1" (click)="removeRow(i)"
+                                            matTooltip='Remove' matTooltipPosition='above'>
+                                            -
+                                        </button>
+                                        <button *ngIf="!isEditMode && i === rows.length - 1"
+                                            class="btn btn-success btn-sm" (click)="addRow()" matTooltip='Add'
+                                            matTooltipPosition='above'>
+                                            +
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                    <div class="rps-btn text-end">
+                        <div *ngIf="userRoles.includes(182)">
+                            <button *ngIf="!isEditMode" class="btn btn-primary" (click)="saveTax()">Save</button>
+                        </div>
+                        <div *ngIf="userRoles.includes(183)">
+                            <button *ngIf="isEditMode" class="btn btn-warning" (click)="updateTax()">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,595 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Manage Customer</h5>
+        </div>
+        <div class="col-md-7  align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Customer Manage</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card">
+        <div class="btn-group" *ngIf="userRoles.includes(172)">
+            <a class="btn btn-primary mb-3" matTooltip='Add Customer' matTooltipPosition='above'
+                (click)="addCustomer()"> + Add
+                Customer</a>
+        </div>
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table id="datatable" class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Serial</th>
+                            <th>Name</th>
+                            <!-- <th>Gender</th> -->
+                            <th>Phone</th>
+                            <th>Credit Limit</th>
+                            <th>Credit Terms</th>
+                            <th>Credit Over Limit</th>
+                            <th>Status</th>
+                            <th *ngIf="userRoles.includes(173) || userRoles.includes(174)">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ user.customername }}</td>
+                            <!-- <td>{{ user.gender || 'N/A' }}</td> -->
+                            <td>{{ user.mobile }}</td>
+                            <td>{{ user.credit_limit }}</td>
+                            <td>{{ user.credit_terms }}</td>
+                            <td>{{ user.sale_over_credit }}</td>
+                            <td><span [ngClass]="{ 'status-inactive ': user.status?.toLowerCase() === 'inactive',
+                                'status-active ': user.status?.toLowerCase() === 'active'
+                                }">{{ user.status || user.active_status }}</span></td>
+                            <!-- <td>
+                                <a *ngIf="user.bank_passbook_url" matTooltip='View Passbook' matTooltipPosition='above'
+                                    [href]="user.bank_passbook_url" target="_blank">View</a>
+                            </td>
+                            <td>
+                                <img *ngIf="user.profile_image_url" [src]="user.profile_image_url" width="50" />
+                            </td>
+                            <td>
+                                <a *ngIf="user.pancard_url" matTooltip='View Pancard' matTooltipPosition='above'
+                                    [href]="user.pancard_url" target="_blank">View</a>
+                            </td>
+                            <td>
+                                <a *ngIf="user.aadhar_url" matTooltip='View Aadhar' matTooltipPosition='above'
+                                    [href]="user.aadhar_url" target="_blank">View</a>
+                            </td> -->
+                            <td *ngIf="userRoles.includes(173) || userRoles.includes(174)">
+                                <a *ngIf="userRoles.includes(173)" class="btn btn-primary" matTooltip='Edit'
+                                    matTooltipPosition='above' (click)="editUser(user, i)">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                                <a *ngIf="userRoles.includes(174)" class="btn btn-danger" matTooltip='Delete'
+                                    matTooltipPosition='above' (click)="deleteUser(user, i)">
+                                    <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" #addUserForm="ngForm">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Customer</h5>
+                    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Name Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Customer Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" formControlName="username" />
+                                <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched"
+                                    class="text-danger">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Phone Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" formControlName="email" />
+
+                            </div>
+                        </div>
+                        <!-- Phone Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Phone Number <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" formControlName="phone" />
+                                <div *ngIf="userForm.get('phone')?.invalid && userForm.get('phone')?.touched"
+                                    class="text-danger">
+                                    Phone number is required.
+                                </div>
+                                <div *ngIf="userForm.get('phone')?.errors?.['pattern']" class="text-danger">Phone number
+                                    must be 10
+                                    digits.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Fields -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Address1 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" formControlName="address" />
+                                <div *ngIf="userForm.get('address')?.invalid && userForm.get('address')?.touched"
+                                    class="text-danger">
+                                    Address1 is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Address2</label>
+                                <input type="text" class="form-control" formControlName="address2" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Address3</label>
+                                <input type="text" class="form-control" formControlName="address3" />
+                            </div>
+                        </div>
+
+                        <!-- City Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" class="form-control" formControlName="city" />
+                            </div>
+                        </div>
+
+                        <!-- State Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" class="form-control" formControlName="state" />
+                            </div>
+                        </div>
+
+                        <!-- Country Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" class="form-control" formControlName="country" />
+                            </div>
+                        </div>
+
+                        <!-- Pincode Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Pincode</label>
+                                <input type="number" maxlength="6" pattern="\d*" class="form-control"
+                                    formControlName="pincode">
+                                <div *ngIf="userForm.get('pincode')?.errors?.['pattern']" class="text-danger">Pincode
+                                    must be 6
+                                    digits.</div>
+                            </div>
+                        </div>
+
+                        <!-- Gender Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="form-control" formControlName="gender">
+                                    <option value>Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Status Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control" formControlName="status">
+                                    <option value>Select</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Profile Photo Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Profile Photo</label>
+                                <input type="file" class="form-control" formControlName="profile"
+                                    (change)="onFileChange($event, 'profile')" />
+                                <div *ngIf="preview.profile" class="mt-2">
+
+                                    <img [src]="preview.profile" alt="Profile Preview" class="img-thumbnail" width="100"
+                                        (click)="viewImage(preview.profile)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Bank Passbook Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Bank Passbook</label>
+                                <input type="file" class="form-control" formControlName="passbook"
+                                    (change)="onFileChange($event, 'passbook')" />
+                                <div *ngIf="preview.passbook" class="mt-2">
+                                    <img [src]="preview.passbook" alt="Passbook Preview" class="img-thumbnail"
+                                        width="100" (click)="viewImage(preview.passbook)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Pancard Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Pancard</label>
+                                <input type="file" class="form-control" formControlName="pancard"
+                                    (change)="onFileChange($event, 'pancard')" />
+                                <div *ngIf="preview.pancard" class="mt-2">
+                                    <img [src]="preview.pancard" alt="Pancard Preview" class="img-thumbnail" width="100"
+                                        (click)="viewImage(preview.pancard)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Aadhar Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Aadhar Upload</label>
+                                <input type="file" class="form-control" formControlName="aadhar"
+                                    (change)="onFileChange($event, 'aadhar')" />
+                                <div *ngIf="preview.aadhar" class="mt-2">
+                                    <img [src]="preview.aadhar" alt="Aadhar Preview" class="img-thumbnail" width="100"
+                                        (click)="viewImage(preview.aadhar)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Credit Limit Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Credit Limit</label>
+                                <input type="text" class="form-control" formControlName="credit_limit" />
+                            </div>
+                        </div>
+
+                        <!-- Credit Terms Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="credit_terms_days">Credit Terms </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="credit_terms_days"
+                                        formControlName="credit_terms_days" placeholder="Enter days" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Days</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credit Over Limit Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group" style="display: flex; align-items: center;">
+                                <label for="credit_overlimit" style="margin-bottom: 0;">Credit Over Limit</label>
+                                <input type="checkbox" style="margin-left: 10px;"
+                                    [checked]="userForm.get('credit_overlimit')?.value === 1"
+                                    (change)="toggleCreditOverlimit($event)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form [formGroup]="editForm" (ngSubmit)="updateUser()" #editUserForm="ngForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
+                    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Name Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" class="form-control" formControlName="username" />
+                                <div *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched"
+                                    class="text-danger">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Phone Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" formControlName="email" />
+                                <div *ngIf="editForm.get('email')?.invalid && editForm.get('email')?.touched"
+                                    class="text-danger">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Phone Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="number" class="form-control" formControlName="phone" />
+                                <!-- <div *ngIf="editForm.get('phone')?.invalid && editForm.get('phone')?.touched"
+                                class="text-danger">
+                                Phone number is required.
+                            </div> -->
+                                <div *ngIf="editForm.get('phone')?.errors?.['pattern']" class="text-danger">Phone number
+                                    must be 10
+                                    digits.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Fields -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Address1</label>
+                                <input type="text" class="form-control" formControlName="address" />
+                                <div *ngIf="editForm.get('address')?.invalid && editForm.get('address')?.touched"
+                                    class="text-danger">
+                                    Address1 is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Address2</label>
+                                <input type="text" class="form-control" formControlName="address2" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Address3</label>
+                                <input type="text" class="form-control" formControlName="address3" />
+                            </div>
+                        </div>
+
+                        <!-- City Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" class="form-control" formControlName="city" />
+                                <div *ngIf="editForm.get('city')?.invalid && editForm.get('city')?.touched"
+                                    class="text-danger">
+                                    City is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- State Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" class="form-control" formControlName="state" />
+                                <div *ngIf="editForm.get('state')?.invalid && editForm.get('state')?.touched"
+                                    class="text-danger">
+                                    State is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Country Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" class="form-control" formControlName="country" />
+                                <div *ngIf="editForm.get('country')?.invalid && editForm.get('country')?.touched"
+                                    class="text-danger">
+                                    Country is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pincode Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Pincode</label>
+                                <input type="number" maxlength="6" pattern="\d*" class="form-control"
+                                    formControlName="pincode">
+                                <!-- <div *ngIf="editForm.get('pincode')?.invalid && editForm.get('pincode')?.touched"
+                                class="text-danger">
+                                Pincode is required.
+                            </div> -->
+                                <div *ngIf="editForm.get('pincode')?.errors?.['pattern']" class="text-danger">Pincode
+                                    must be 6
+                                    digits.</div>
+                            </div>
+                        </div>
+
+                        <!-- Gender Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="form-control" formControlName="gender">
+                                    <option value>Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <div *ngIf="editForm.get('gender')?.invalid && editForm.get('gender')?.touched"
+                                    class="text-danger">
+                                    Gender is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control" formControlName="status">
+                                    <option value>Select</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <div *ngIf="editForm.get('status')?.invalid && editForm.get('status')?.touched"
+                                    class="text-danger">
+                                    Status is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Photo Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Profile Photo</label>
+                                <input type="file" class="form-control" formControlName="profile"
+                                    (change)="onFileChange($event, 'profile')" />
+                                <div *ngIf="editForm.get('profile')?.invalid && editForm.get('profile')?.touched"
+                                    class="text-danger">
+                                    Profile photo is required.
+                                </div>
+                                <div *ngIf="preview.profile" class="mt-2">
+
+                                    <img [src]="preview.profile" alt="Profile Preview" class="img-thumbnail" width="100"
+                                        (click)="viewImage(preview.profile)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Bank Passbook Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Bank Passbook</label>
+                                <input type="file" class="form-control" formControlName="passbook"
+                                    (change)="onFileChange($event, 'passbook')" />
+                                <div *ngIf="editForm.get('passbook')?.invalid && editForm.get('passbook')?.touched"
+                                    class="text-danger">
+                                    Passbook photo is required.
+                                </div>
+                                <div *ngIf="preview.passbook" class="mt-2">
+                                    <img [src]="preview.passbook" alt="Passbook Preview" class="img-thumbnail"
+                                        width="100" (click)="viewImage(preview.passbook)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Pancard Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Pancard</label>
+                                <input type="file" class="form-control" formControlName="pancard"
+                                    (change)="onFileChange($event, 'pancard')" />
+                                <div *ngIf="editForm.get('pancard')?.invalid && editForm.get('pancard')?.touched"
+                                    class="text-danger">
+                                    Pancard photo is required.
+                                </div>
+                                <div *ngIf="preview.pancard" class="mt-2">
+                                    <img [src]="preview.pancard" alt="Pancard Preview" class="img-thumbnail" width="100"
+                                        (click)="viewImage(preview.pancard)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Aadhar Upload -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Aadhar Upload</label>
+                                <input type="file" class="form-control" formControlName="aadhar"
+                                    (change)="onFileChange($event, 'aadhar')" />
+                                <div *ngIf="editForm.get('aadhar')?.invalid && editForm.get('aadhar')?.touched"
+                                    class="text-danger">
+                                    Aadhar photo is required.
+                                </div>
+                                <div *ngIf="preview.aadhar" class="mt-2">
+                                    <img [src]="preview.aadhar" alt="Aadhar Preview" class="img-thumbnail" width="100"
+                                        (click)="viewImage(preview.aadhar)" style="cursor: pointer;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Credit Limit Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Credit Limit</label>
+                                <input type="text" class="form-control" formControlName="credit_limit" />
+                            </div>
+                        </div>
+
+                        <!-- Credit Terms Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="credit_terms_days">Credit Terms </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="credit_terms_days"
+                                        formControlName="credit_terms_days" placeholder="Enter days" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Days</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credit Over Limit Field -->
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group" style="display: flex; align-items: center;">
+                                <label for="credit_overlimit" style="margin-bottom: 0;">Credit Over Limit</label>
+                                <input type="checkbox" style="margin-left: 10px;"
+                                    [checked]="editForm.get('credit_overlimit')?.value === 1"
+                                    (change)="toggleeditCreditOverlimit($event)" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

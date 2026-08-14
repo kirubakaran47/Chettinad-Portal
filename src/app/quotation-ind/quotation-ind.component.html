@@ -1,0 +1,141 @@
+<div *ngIf="isLoading" class="loader-overlay">
+  <div class="loader"></div>
+</div>
+<div class="content-section ">
+  <div class="row tittle">
+    <div class="top col-md-5 align-self-center">
+      <h5>Quotation List</h5>
+    </div>
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+        <li class="breadcrumb-item active">Quotation List</li>
+      </ol>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class>
+        <div class="btn-group float-right">
+          <a class="btn btn-primary mb-3" matTooltip='Add Quotation' matTooltipPosition='above'
+            (click)="addQuotationInd()" *ngIf="userRoles.includes(312)">+
+            Add Quotation</a>
+        </div>
+
+      </div>
+      <div class="card-body">
+        <div class="userDatatable global-shadow border-0 bg-white w-100">
+          <input type="text" [(ngModel)]="searchQuery" (input)="searchQuotation()" placeholder="Search Quotation..."
+            class="form-control searchQuery">
+          <div class="table-responsive">
+            <table class="table mb-0 table-borderless">
+              <thead>
+                <tr class="userDatatable-header">
+                  <th>
+                    <span class="userDatatable-title">S.NO</span>
+                  </th>
+                  <th>
+                    <span class="userDatatable-title">DATE</span>
+                  </th>
+                  <th>
+                    <span class="userDatatable-title">ESTIMATE NUMBER</span>
+                  </th>
+                  <th>
+                    <span class="userDatatable-title">REFERENCE NUMBER</span>
+                  </th>
+                  <th style="width: 300px;">
+                    <span class="userDatatable-title">CUSTOMER NAME</span>
+                  </th>
+                  <th>
+                    <span class="userDatatable-title">STATUS</span>
+                  </th>
+                  <th>
+                    <span class="userDatatable-title">AMOUNT</span>
+                  </th>
+                  <th *ngIf="userRoles.includes(311) || userRoles.includes(313) || userRoles.includes(314)">
+                    <span class="userDatatable-title">ACTION</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let list of paginatedList ; let i = index ;">
+                  <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                  <td>
+                    {{list.date}}
+                  </td>
+                  <td>
+                    {{list.estimate_number}}
+                  </td>
+                  <td>
+                    <span class="text-center"> {{list.reference_number ? list.reference_number : '-' }} </span>
+                  </td>
+                  <td>
+                    <span> {{list.customer_name}} </span>
+                  </td>
+                  <td>
+                    <span class="status-badge" [ngClass]="{  'status-success': list.status === 'INVOICED',
+                        'status-danger': list.status === 'EXPIRED', 'status-sent': list.status === 'SENT','status-draft': list.status === 'DRAFT'
+                      }">
+                      {{ list.status | titlecase }}
+                    </span>
+                  </td>
+                  <td>
+                    ₹ {{list.amount}}
+                  </td>
+                  <td *ngIf="userRoles.includes(311) || userRoles.includes(313) || userRoles.includes(314)">
+                    <div class="page" style="padding-left: 10px;">
+                      <div class="dropdown">
+                        <button class="btn1"><i class="fa fa-bars"></i></button>
+                        <ul class="dropdown__list">
+                          <li class="dropdown__item" *ngIf="userRoles.includes(312)">
+                            <a class="btn btn-secondary" title="Convert Invoice" (click)="convertQuatation(list.estimate_id)">
+                              <i class="fa fa-file" aria-hidden="true"></i>
+                            </a>
+                          </li>
+                          <li class="dropdown__item" *ngIf="userRoles.includes(313)">
+                            <a class="btn btn-primary" title="Edit" (click)="editQuatation(list.estimate_id)">
+                               <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                          </li>
+                          <li class="dropdown__item" *ngIf="userRoles.includes(311)">
+                            <a class="btn btn-info" title=" PDF" (click)="openPdf(list.pdf_url)">
+                              <i class="fa fa-file-pdf" aria-hidden="true"></i>
+                            </a>
+                          </li>
+                          <li class="dropdown__item" *ngIf="userRoles.includes(314)">
+                            <a class="btn btn-danger" title="Delete" (click)="confirmDelete(list.estimate_id, i)">
+                              <i class="fa fa-trash-alt" aria-hidden="true"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="filteredQuotationList.length === 0">
+                  <td colspan="12" class="text-center">
+                    <span *ngIf="!showNoPermissionMessage">No Quotation found</span>
+                    <span *ngIf="showNoPermissionMessage">No permission to view Quotation</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Pagination -->
+            <div class="pagination-container" *ngIf="totalPages > 1">
+              <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+
+              <ng-container *ngFor="let page of getVisiblePages()">
+                <button *ngIf="page !== '...'" class="page-btn" (click)="changePage(+page)"
+                  [class.active]="currentPage === page">{{ page }}</button>
+                <span *ngIf="page === '...'" class="ellipsis">...</span>
+              </ng-container>
+
+              <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+.img-thumbnail {
+  max-height: 100px;
+  object-fit: contain;
+}
+form{padding: 30px;}
+.form-control{height: 40px;}
+label{font-size: 16px;}
+button.btn-close {
+    position: absolute;
+    right: 5px;
+    background: red;
+    color: #fff;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    z-index: 99;
+}
+input[type='checkbox']{cursor: pointer;}
+@media (max-width: 768px) {
+  form{padding: 0px;}
+  .modal-body.text-center{
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px 0px;
+  }
+ .form-group table.table.table-bordered{
+    font-size: 10px;
+  }
+}

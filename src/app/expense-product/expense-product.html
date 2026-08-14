@@ -1,0 +1,117 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Expense Detsils</h5>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a
+                        href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Expense Detsils</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Expense Type</th>
+                                <th>Description</th>
+                                <th
+                                    *ngIf="userRoles.includes(203) || userRoles.includes(204)">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- List of saved rows -->
+                            <tr *ngFor="let tax of expenseList; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ tax.name }}</td>
+                                <td>{{ tax.description }}</td>
+                                <td
+                                    *ngIf="userRoles.includes(203) || userRoles.includes(204)">
+                                    <a class="btn btn-primary"
+                                        *ngIf="userRoles.includes(203)"
+                                        matTooltip='Edit'
+                                        matTooltipPosition='above'
+                                        (click)="editExpenseDetails(i)">
+                                        <i class="fa fa-edit"
+                                            aria-hidden="true"></i>
+                                    </a>
+                                    <a class="btn btn-danger"
+                                        *ngIf="userRoles.includes(204)"
+                                        matTooltip='Delete'
+                                        matTooltipPosition='above'
+                                        (click)="deleteExpensedetsils(i)">
+                                        <i class="fa fa-trash-alt"
+                                            aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="userRoles.includes(202)">
+
+                                <tr>
+                                    <td colspan="12"
+                                        style="background: #dfeef6;color: #2D3B48;">New
+                                        Expense Type</td>
+                                </tr>
+                                <tr *ngFor="let row of rows; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>
+                                        <input type="text"
+                                            [(ngModel)]="row.expense_product"
+                                            class="form-control"
+                                            placeholder="new Expense" />
+                                        <div *ngIf="row.errors?.expense_product"
+                                            class="text-danger small">{{
+                                            row.errors.expense_product }}</div>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                            [(ngModel)]="row.description"
+                                            class="form-control"
+                                            placeholder="Description" />
+                                        <div *ngIf="row.errors?.description"
+                                            class="text-danger small">{{
+                                            row.errors.description }}
+                                        </div>
+                                    </td>
+                                    <!-- <td>
+                                        <button
+                                            *ngIf="!isEditMode && rows.length > 1"
+                                            class="btn btn-danger btn-sm me-1"
+                                            (click)="removeRow(i)"
+                                            matTooltip='Remove'
+                                            matTooltipPosition='above'>
+                                            -
+                                        </button>
+                                        <button
+                                            *ngIf="!isEditMode && i === rows.length - 1"
+                                            class="btn btn-success btn-sm"
+                                            (click)="addRow()" matTooltip='Add'
+                                            matTooltipPosition='above'>
+                                            +
+                                        </button>
+                                    </td> -->
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                    <div class="rps-btn text-end">
+                        <button *ngIf="!isEditMode" class="btn btn-primary"
+                            (click)="saveExpense()">Save</button>
+                        <button *ngIf="isEditMode" class="btn btn-warning"
+                            (click)="updateExpense()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

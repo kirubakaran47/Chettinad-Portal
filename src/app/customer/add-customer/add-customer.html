@@ -1,0 +1,571 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Add Customer</h5>
+        </div>
+        <div class="col-md-7  align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Add Customer</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card" style="padding: 0;">
+        <div class="card-body">
+            <form [formGroup]="customerForm">
+
+                <h2>New Customer</h2>
+
+                <!-- BASIC DETAILS -->
+                <div class="card">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="customerForm-details">
+                                <label>Customer Type</label>
+                                <div class="customerForm-list">
+                                    <label><input type="radio" value="Business" formControlName="customerType">
+                                        Business</label>
+                                    <label><input type="radio" value="Individual" formControlName="customerType">
+                                        Individual</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col inline">
+                            <label>Primary Contact</label>
+                            <select formControlName="salutation" class="form-control">
+                                <option value="" disabled>Select salutation</option>
+                                <option value="Mr">Mr</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Miss">Miss</option>
+                                <option value="Dr">Dr</option>
+                            </select>
+
+                            <input placeholder="First Name" class="form-control" formControlName="firstName">
+                            <input placeholder="Last Name" class="form-control" formControlName="lastName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input formControlName="companyName" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label class="required">Display Name <span class="text-danger">*</span></label>
+                                <input formControlName="displayName" class="form-control">
+                                <small class="text-danger" *ngIf="customerForm.get('displayName')?.touched &&
+           customerForm.get('displayName')?.hasError('required')">
+                                    Display Name is required
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input formControlName="email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group">
+                                <label>Customer Language</label>
+                                <select formControlName="language" class="form-control">
+                                    <option value="" disabled>Select State</option>
+                                    <option *ngFor="let language of languageList" [value]="language.code">
+                                        {{ language.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-12">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <div class="d-flex" style="gap: 30px;">
+                                    <div class="customerForm-number-details">
+                                        <select class="form-control w-25" formControlName="countryCode">
+                                            <option value="" disabled>Select State</option>
+                                            <option *ngFor="let country of countryList" [value]="country.dial_code">
+                                                {{ country.dial_code }} <span>({{ country.name
+                                                    }})</span>
+                                            </option>
+                                        </select>
+
+                                        <input type="tel" class="form-control ml-2" formControlName="phone"
+                                            placeholder="Enter phone number" maxlength="10" />
+                                    </div>
+                                    <div class="customerForm-number-details">
+                                        <select class="form-control w-25" formControlName="mobilecountryCode">
+                                            <option value="" disabled>Select State</option>
+                                            <option *ngFor="let country of countryList" [value]="country.dial_code">
+                                                {{ country.dial_code }} <span>({{ country.name
+                                                    }})</span>
+                                            </option>
+                                        </select>
+
+                                        <input type="tel" class="form-control ml-2" formControlName="mobile"
+                                            placeholder="Enter Mobile number" maxlength="10" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP TABS -->
+                <div class="tabs" *ngIf="!isMobile">
+                    <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab === tab"
+                        (click)="activeTab = tab">
+                        {{ tab }}
+                    </button>
+                </div>
+
+                <!-- MOBILE ACCORDION -->
+                <div class="accordion" *ngIf="isMobile">
+
+                    <div class="accordion-item" *ngFor="let tab of tabs">
+
+                        <div class="accordion-header" (click)="toggleAccordion(tab)">
+                            <span>{{ tab }}</span>
+                            <span>{{ activeTab === tab ? '−' : '+' }}</span>
+                        </div>
+
+                        <div class="accordion-body" *ngIf="activeTab === tab">
+                            <ng-container [ngTemplateOutlet]="getTemplate(tab)"></ng-container>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- DESKTOP TAB CONTENT -->
+                <div *ngIf="!isMobile">
+                    <ng-container [ngTemplateOutlet]="getTemplate(activeTab)"></ng-container>
+                </div>
+
+
+
+                <!-- OTHER DETAILS -->
+                <ng-template #otherDetailsTpl>
+                    <div class="card">
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>GST Treatment <span class="text-danger">*</span></label>
+                                    <select formControlName="gstTreatment" class="form-control">
+                                        <option value="">Select GST Treatment</option>
+                                        <option *ngFor="let gst of getGstTreatments" [value]="gst.value">
+                                            {{ gst.label }}
+                                        </option>
+                                    </select>
+                                    <small class="text-danger" *ngIf="customerForm.get('gstTreatment')?.touched &&
+           customerForm.get('gstTreatment')?.hasError('required')">
+                                        GST Treatment is required
+                                    </small>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Place of Supply <span class="text-danger">*</span></label>
+                                    <select formControlName="placeOfSupply" class="form-control">
+                                        <option value="" disabled>Select State</option>
+                                        <option *ngFor="let state of stateList" [value]="state">
+                                            {{ state }}
+                                        </option>
+                                    </select>
+                                    <small class="text-danger" *ngIf="customerForm.get('placeOfSupply')?.touched &&
+           customerForm.get('placeOfSupply')?.hasError('required')">
+                                        Place of Supply is required
+                                    </small>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>PAN</label>
+                                    <input formControlName="pan" class="form-control">
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Tax Preference <span class="text-danger">*</span></label>
+                                    <div class="customerForm-list">
+                                        <label><input type="radio" value="Taxable" formControlName="taxPreference">
+                                            Taxable</label>
+                                        <label><input type="radio" value="Tax" formControlName="taxPreference"> Tax
+                                            Exempt</label>
+
+                                    </div>
+                                    <small class="text-danger" *ngIf="customerForm.get('taxPreference')?.touched &&
+           customerForm.get('taxPreference')?.hasError('required')">
+                                        Tax Preference is required
+                                    </small>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Currency</label>
+                                    <select formControlName="currency" class="form-control">
+                                        <option value="" disabled>Select Currency</option>
+                                        <option *ngFor="let currency of getCurrencyList" [value]="currency.currency_id">
+                                            {{ currency.currency_code }} - {{ currency.currency_name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Payment Terms</label>
+                                    <select formControlName="paymentTerms" class="form-control">
+                                        <option value="" disabled>Select Term</option>
+                                        <option *ngFor="let term of termsList" [value]="term.id">
+                                            {{ term.label }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Enable Portal</label>
+                                    <label style="display: flex;">
+                                        <input type="checkbox" style="margin-right: 10px;"
+                                            formControlName="enablePortal">
+                                        Allow portal access for this customer
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Documents</label>
+                                    <input type="file" multiple (change)="onFileSelect($event)" class="form-control">
+                                    <small>You can upload a maximum of 10 files, 10MB each</small>
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary mb-2" (click)="toggleMoreDetails()">
+                                    {{ showMoreDetails ? 'Hide additional details' : '+ Add more details' }}
+                                </button>
+                            </div>
+                            <ng-container *ngIf="showMoreDetails">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Website URL</label>
+                                        <input placeholder="https://example.com" formControlName="website"
+                                            class="form-control">
+                                    </div>
+
+                                </div>
+
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <input formControlName="department" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Designation</label>
+                                        <input formControlName="designation" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label>X</label>
+                                        <div class="inline-field">
+                                            <input formControlName="xHandle" class="form-control"
+                                                placeholder="https://x.com">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Skype Name / Number</label>
+                                        <input formControlName="skype" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Facebook</label>
+                                        <div class="inline-field">
+                                            <input formControlName="facebook" class="form-control"
+                                                placeholder="https://facebook.com">
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
+
+
+                <!-- ADDRESS -->
+                <ng-template #addressTpl>
+                    <div class="card two-column">
+                        <div class="card">
+                            <div formGroupName="billingAddress">
+                                <h4>Billing Address</h4>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Attention</label>
+                                            <input formControlName="attention" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Country/Region</label>
+                                            <select formControlName="country" class="form-control">
+                                                <option value="" disabled>Select The Country</option>
+                                                <option *ngFor="let country of countryAddressList" [value]="country.id">
+                                                    {{ country.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Street 1</label>
+                                            <input formControlName="street1" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Street 2</label>
+                                            <input formControlName="street2" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <input formControlName="city" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>State</label>
+                                            <select formControlName="state" class="form-control">
+                                                <option value="" disabled>Select The State</option>
+                                                <option *ngFor="let state of billingStateList" [value]="state.id">
+                                                    {{ state.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Pin Code</label>
+                                            <input formControlName="pincode" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Phone</label>
+                                            <input formControlName="phone" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Fax Number</label>
+                                            <input formControlName="fax" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>
+                                    <input type="checkbox" (change)="copyBillingToShipping($event)">
+                                    Same as Billing Address
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="card">
+
+                            <div formGroupName="shippingAddress">
+                                <h4>Shipping Address</h4>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Attention</label>
+                                            <input formControlName="attention" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Country/Region</label>
+                                            <select formControlName="country" class="form-control">
+                                                <option value="" disabled>Select The Country</option>
+                                                <option *ngFor="let country of countryAddressList" [value]="country.id">
+                                                    {{ country.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Street 1</label>
+                                            <input formControlName="street1" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Street 2</label>
+                                            <input formControlName="street2" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <input formControlName="city" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>State</label>
+                                            <select formControlName="state" class="form-control">
+                                                <option value="" disabled>Select The State</option>
+                                                <option *ngFor="let state of shippingStateList" [value]="state.id">
+                                                    {{ state.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Pin Code</label>
+                                            <input formControlName="pincode" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Phone</label>
+                                            <input formControlName="phone" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Fax Number</label>
+                                            <input formControlName="fax" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-template>
+
+                <!-- CONTACT PERSONS -->
+                <ng-template #contactTpl>
+                    <div class="card">
+                        <div class="btn-apply">
+                            <button type="button" class="btn btn-primary" (click)="addPerson()">+ Add Contact
+                                Person</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table formArrayName="contactPersons"
+                                class="table table-striped table-bordered dt-responsive nowrap"
+                                style="border-collapse: collapse; border-spacing: 0; width: 100%;"
+                                enctype="multipart/form-data">
+                                <thead>
+                                    <tr>
+                                        <th>Salutation</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Work Phone</th>
+                                        <th>Mobile</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let person of contactPersons.controls; let i = index"
+                                        [formGroupName]="i">
+                                        <td>
+                                            <select formControlName="salutation" class="form-control">
+                                                <option value="Mr">Mr</option>
+                                                <option value="Mrs">Mrs</option>
+                                                <option value="Ms">Ms</option>
+                                                <option value="Miss">Miss</option>
+                                                <option value="Dr">Dr</option>
+                                            </select>
+                                        </td>
+                                        <td><input formControlName="firstName"></td>
+                                        <td><input formControlName="lastName"></td>
+                                        <td><input formControlName="email"></td>
+                                        <td>
+                                            <div class="customerForm-number-details">
+                                                <select class="form-control" formControlName="workPhonecountryCode">
+                                                    <option *ngFor="let country of countryList"
+                                                        [value]="country.dial_code">
+                                                        {{ country.dial_code }}
+                                                    </option>
+                                                </select>
+                                                <input type="tel" class="form-control" formControlName="workPhone"
+                                                    placeholder="Enter number" maxlength="10" />
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <div class="customerForm-number-details">
+                                                <select class="form-control" formControlName="mobilecountryCode">
+                                                    <option *ngFor="let country of countryList"
+                                                        [value]="country.dial_code">
+                                                        {{ country.dial_code }}
+                                                    </option>
+                                                </select>
+                                                <input type="tel" class="form-control" formControlName="mobile"
+                                                    placeholder="Enter number" maxlength="10" />
+                                            </div>
+
+                                        </td>
+                                        <td><button type="button" class="btn btn-danger"
+                                                (click)="removePerson(i)">✕</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #remarksTpl>
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea formControlName="remarks" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- ACTIONS -->
+                <div class="actions">
+                    <button type="button" class="btn btn-primary" (click)="saveCustomer()">Save</button>
+                    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

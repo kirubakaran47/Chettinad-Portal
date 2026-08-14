@@ -1,0 +1,46 @@
+.text-end {
+  width: 150px;
+}
+
+.btn-section {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  margin-top: 32px;
+  gap: 12px;
+}
+
+input[readonly] {
+  background-color: #fff !important;
+  cursor: not-allowed;
+}
+
+/* General select box */
+::ng-deep ng-select,
+::ng-deep ng-select.ng-select-focused,
+::ng-deep ng-select.ng-select-filtered {
+  width: 100%;
+  min-height: 38px;
+  /* Bootstrap input size */
+  font-size: 14px;
+}
+
+/* Container (input area) */
+::ng-deep ng-select .ng-select-container,
+::ng-deep ng-select.ng-select-focused .ng-select-container,
+::ng-deep ng-select.ng-select-filtered .ng-select-container {
+  min-height: 38px;
+  height: 38px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  box-shadow: none !important;
+  padding: 0 6px;
+}
+
+.modal-dialog {
+    max-width: 700px;
+}
+.checkbox label{margin-bottom: 0;margin-right: 2px;}
+.checkbox .form-group{display: flex;align-items: center;margin-right: 20px;}

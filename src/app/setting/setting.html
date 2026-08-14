@@ -1,0 +1,132 @@
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Settings</h5>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)"
+                        (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Setting</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="profile-container">
+                <h2>User Profile</h2>
+                <div class="row" *ngIf="selectedUser">
+                    <!-- Left Section -->
+                    <div class="col-12 col-sm-3 col-lg-3">
+                        <div class="profile-sidebar">
+                            <img
+                                [src]="selectedUser.profile_image_url || 'assets/img/user.jpg'"
+                                alt="Profile Picture" class="profile-pic">
+                            <h2>{{ selectedUser.username }}</h2>
+                            <p class="role">{{ selectedUser.role || 'User'
+                                }}</p>
+                        </div>
+                    </div>
+                    <!-- Right Section -->
+                    <div class="col-12 col-sm-9 col-lg-9">
+                        <div class="profile-details">
+                            <section>
+                                <h3>Personal Information</h3>
+                                <p><strong><span>Email Address</span>:</strong>
+                                    {{ selectedUser.email }}</p>
+                                <p><strong><span>Phone Number</span>:</strong>
+                                    {{ selectedUser.phone }}</p>
+                                <p><strong><span>Gender</span>:</strong> {{
+                                    selectedUser.gender }}</p>
+                                <p><strong><span>Account Status</span>:</strong>
+                                    {{ selectedUser.active_status }}</p>
+                            </section>
+
+                            <section>
+                                <h3>Address Information</h3>
+                                <p><strong><span>Address Line 1</span>:</strong>
+                                    {{ selectedUser.address_1 }}</p>
+                                <p><strong><span>Address Line 3</span>:</strong>
+                                    {{ selectedUser.address_2 }}</p>
+                                <p><strong><span>City</span>:</strong> {{
+                                    selectedUser.city }}</p>
+                                <p><strong><span>State /
+                                            Province</span>:</strong> {{
+                                    selectedUser.state }}</p>
+                                <p><strong><span>PIN Code</span>:</strong> {{
+                                    selectedUser.pincode }}</p>
+                                <p><strong><span>Country</span>:</strong> {{
+                                    selectedUser.country }}</p>
+                            </section>
+
+                            <section>
+                                <h3>Documents</h3>
+                                <a *ngIf="selectedUser.bank_passbook_url"
+                                    [href]="selectedUser.bank_passbook_url"
+                                    class="doc-btn"
+                                    target="_blank" matTooltip='View Passbook'
+                                    matTooltipPosition='above'>View Bank
+                                    Passbook Copy</a>
+                                <a *ngIf="selectedUser.aadhar_url"
+                                    [href]="selectedUser.aadhar_url"
+                                    class="doc-btn"
+                                    target="_blank"
+                                    matTooltip='View Aadhaar Card'
+                                    matTooltipPosition='above'>View Aadhaar
+                                    Card</a>
+                                <a *ngIf="selectedUser.pancard_url"
+                                    [href]="selectedUser.pancard_url"
+                                    class="doc-btn"
+                                    target="_blank" matTooltip='View PAN Card'
+                                    matTooltipPosition='above'>View PAN Card</a>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="login-banner-section" *ngIf="role === 'Admin'">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="login-banner">
+                            <h3>Login Background Change Option</h3>
+                            <form [formGroup]="loginbannerForm"
+                                (ngSubmit)="updateBanner()">
+                                <div class="form-group row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <label>Upload Login Background
+                                            Image</label>
+                                        <input type="file" class="form-control"
+                                            formControlName="login_banner"
+                                            (change)="onFileChange($event)" />
+                                        <div
+                                            *ngIf="loginbannerForm.get('login_banner')?.invalid && loginbannerForm.get('login_banner')?.touched"
+                                            class="text-danger">
+                                            Login background image is required.
+                                        </div>
+                                        <div class="preview" *ngIf="preview">
+                                            <img [src]="preview"
+                                                alt="Login Banner Preview"
+                                                class="img-thumbnail"
+                                                width="100"
+                                                (click)="viewImage(preview)"
+                                                style="cursor: pointer;" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit"
+                                        class="btn btn-primary"
+                                        [disabled]="loginbannerForm.invalid">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+.footer {
+    background: #fff;
+    text-align: center;
+    padding: 15px;
+}
+.footer p{margin: 0;}
+
+.full-view .footer, .main-content.sidebar-collapsed .footer{left: 0;}

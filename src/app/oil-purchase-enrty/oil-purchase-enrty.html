@@ -1,0 +1,341 @@
+
+<div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+
+<div class="content-section">
+    <div class="row tittle">
+        <div class="top col-md-5 align-self-center">
+            <h5>Purchase Entry Report</h5>
+        </div>
+        <div class="col-md-7  align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a
+                        href="javascript:void(0)" (click)="home()">Home</a></li>
+                <li class="breadcrumb-item active">Purchase Entry Report</li>
+            </ol>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="filters">
+                <form>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="from-group">
+                                <label>Form Date:</label>
+                                <input type="date" class="form-control"
+                                    id="filterFromData">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>To Date:</label>
+                                <input type="date" class="form-control"
+                                    id="filterToDate">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Product Name:</label>
+                                <ng-select [items]="productNameList"
+                                    bindLabel="name"
+                                    placeholder="Select Product Name"
+                                    [(ngModel)]="selectedProduct"
+                                    [ngModelOptions]="{standalone: true}">
+                                </ng-select>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-6">
+                            <div class="form-group">
+                                <label>Vendor Name:</label>
+                                <ng-select [items]="vendorNameList"
+                                    bindLabel="vendor_name"
+                                    placeholder="Select Vendor Name"
+                                    [(ngModel)]="selectedVendor1"
+                                    [ngModelOptions]="{standalone: true}">
+                                </ng-select>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+                <div class="btn-apply">
+                    <button class="btn btn-primary"
+                        (click)="getpurchaseEntryListData()"
+                        matTooltip='Filter Option'
+                        matTooltipPosition='above'>Apply
+                        Filters</button>
+                    <button class="btn btn-primary"
+                        *ngIf="userRoles.includes(112)"
+                        (click)="addPurchaseEntryModal()"
+                        matTooltip='Add Purchase Entry'
+                        matTooltipPosition='above'>+ Add Purchase
+                        Entry</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="datatable"
+                    class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>S.No</th>
+                            <th>Purchase Date</th>
+                            <th>Product Name</th>
+                            <th>Vendor Name</th>
+                            <th>Gross Total</th>
+                            <th>Today Purchase</th>
+                            <th
+                                *ngIf="userRoles.includes(111) || userRoles.includes(113) || userRoles.includes(114)">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let item of purchaseEntryList;let i = index;">
+                            <td>{{i+1}}</td>
+                            <td>{{item.purchase_date}}</td>
+                            <td>{{item.product_names}}</td>
+                            <td>{{item.vendor_name}}</td>
+                            <td>{{item.gross_total}}</td>
+                            <td>{{item.today_purchase}}</td>
+                            <td
+                                *ngIf="userRoles.includes(111) || userRoles.includes(113) || userRoles.includes(114)">
+                                <div class="action-menu"
+                                    [class.open]="isActionOpen === i">
+                                    <a class="btn btn-primary"
+                                        (click)="toggleActionMenu(i, $event)">
+                                        <i class="fa"
+                                            [ngClass]="isActionOpen === i ? 'fa-times' : 'fa-bars'"></i>
+                                    </a>
+
+                                    <div class="action-dropdown"
+                                        *ngIf="isActionOpen === i"
+                                        (click)="$event.stopPropagation()">
+                                        <!-- <a
+                                            *ngIf="userRoles.includes(311)"
+                                            (click)="doucmentPurchaseEntry(item.vendor_file_url); closeAllActionMenus()">
+                                            <i class="fa fa-file"
+                                                matTooltip='Vendor File'
+                                                matTooltipPosition='above'></i>
+                                        </a> -->
+                                        <a
+                                            *ngIf="userRoles.includes(111)"
+                                            (click)="doucmentPurchaseEntry(item.file_url); closeAllActionMenus()">
+                                            <i class="fa fa-file"
+                                                matTooltip='PDF'
+                                                matTooltipPosition='above'></i>
+                                        </a>
+
+                                        <a
+                                            *ngIf="userRoles.includes(111)"
+                                            (click)="viewPurchaseEntry(item.id); closeAllActionMenus()">
+                                            <i class="fa fa-eye"
+                                                matTooltip='view'
+                                                matTooltipPosition='above'></i>
+                                        </a>
+                                        <a
+                                            *ngIf="userRoles.includes(113)"
+                                            (click)="editPurchaseEntryModal(item.id); closeAllActionMenus()">
+                                            <i class="fa fa-edit"
+                                                matTooltip='Edit'
+                                                matTooltipPosition='above'></i>
+                                        </a>
+                                        <a
+                                            *ngIf="userRoles.includes(114)"
+                                            (click)="deletePurchaseEntry(item.id); closeAllActionMenus()">
+                                            <i class="fa fa-trash-alt"
+                                                matTooltip='Delete'
+                                                matTooltipPosition='above'></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Iframe Modal -->
+<!-- Backdrop -->
+<div class="iframe-backdrop" *ngIf="selectedFileUrl || srcDocContent"
+    (click)="closeViewer()"></div>
+
+<!-- Modal -->
+<div class="iframe-modal" *ngIf="selectedFileUrl || srcDocContent">
+    <div class="iframe-modal-header">
+        <span>Preview</span>
+        <button (click)="closeViewer()">✖</button>
+    </div>
+    <div class="iframe-modal-body">
+        <iframe *ngIf="isImageFile" [srcdoc]="srcDocContent"></iframe>
+        <iframe *ngIf="!isImageFile && selectedFileUrl"
+            [src]="selectedFileUrl"></iframe>
+    </div>
+</div>
+
+<!-- vew -->
+
+<div class="modal fade view-modal" id="viewModal" tabindex="-1"
+    aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Purchase Entry View</h5>
+                <button type="button" class="close" aria-label="Close"
+                    (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label for="date" class="form-label">Select
+                                    Date:</label>
+                                <input type="date" id="date"
+                                    [(ngModel)]="purchase_date"
+                                    class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <table
+                        class="table table-striped table-bordered dt-responsive nowrap"
+                        id="entryTable">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Vendor Name</th>
+                                <th *ngIf="!disablePrice">Qty</th>
+                                <th *ngIf="!disablePrice">Price</th>
+                                <th *ngIf="disablePrice">Base Price</th>
+                                <th *ngIf="disablePrice">Total value /
+                                    Kiloliters</th>
+                                <th>CGST</th>
+                                <th>SGST</th>
+                                <th>IGST</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tbody>
+                                <tr *ngFor="let item of selectedItems">
+                                    <td>{{ item.product_name }}<br>
+                                        <div *ngIf="item.serial_number != null && item.serial_number !== ''" class="serial-content">
+                                         <strong>Serial Number:</strong>
+                                        {{ item.serial_number }}
+                                        </div>
+                                        </td>
+                                    <td>{{ item.vendor_name }}</td>
+
+                                    <!-- Qty + Price -->
+                                    <td *ngIf="!disablePrice">{{ item.qty
+                                        }}</td>
+                                    <td *ngIf="!disablePrice">{{ item.price
+                                        }}</td>
+
+                                    <!-- Base Price + KL -->
+                                    <td *ngIf="disablePrice">{{ item.base_price
+                                        }}</td>
+                                    <td *ngIf="disablePrice">
+                                        {{ item.total }} <br /><br />
+                                        <span>Kiloliters (KL)</span><br /><br />
+                                        {{ item.total_liters }}
+                                    </td>
+
+                                    <td>
+                                        {{ getTaxName(item.tnvat_id) }}
+                                        <br /><br />
+                                        {{ item.tnvat }}
+                                    </td>
+
+                                    <td>
+                                        {{ getTaxName(item.vat_lsi_id) }}
+                                        <br /><br />
+                                        {{ item.vat_lsi }}
+                                    </td>
+
+                                    <td>
+                                        {{ getTaxName(item.tcs_id) }}
+                                        <br /><br />
+                                        {{ item.tcs }}
+                                    </td>
+
+                                    <td>{{ item.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered w-50 float-right">
+
+                            <tr>
+                                <td>Purchse Cost</td>
+                                <td> {{selectedPurchase?.purchase_cost}}</td>
+                            </tr>
+                            <!-- <tr>
+                                <td>Transport Vendor</td>
+                                <td>
+                                    {{selectedPurchase?.transport_vendor_name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Vendor File</td>
+                                <td>
+                                    <a *ngIf="selectedPurchase?.vendor_file_url"
+                                        [href]="selectedPurchase.vendor_file_url"
+                                        target="_blank"
+                                        download>
+                                        {{selectedPurchase?.vendor_file}}
+                                        <i class="fa fa-download ms-3"
+                                            style="color: blue;">
+                                        </i>
+                                    </a>
+                                    <span
+                                        *ngIf="!selectedPurchase?.vendor_file_url">No
+                                        File</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Amount</td>
+                                <td> {{selectedPurchase?.net_total}}</td>
+                            </tr> -->
+                            <tr>
+                                <td>File</td>
+                                <td>
+                                    <a *ngIf="selectedPurchase?.file_url"
+                                        [href]="selectedPurchase.file_url"
+                                        target="_blank"
+                                        download>
+                                        {{selectedPurchase?.file}}
+                                        <i class="fa fa-download ms-3"
+                                            style="color: blue;">
+                                        </i>
+                                    </a>
+                                    <span *ngIf="!selectedPurchase?.file_url">No
+                                        File</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Gross</td>
+                                <td> {{selectedPurchase?.gross_total}}</td>
+                            </tr>
+                            <tr>
+                                <td>Today Purchase Cost</td>
+                                <td> {{selectedPurchase?.today_purchase}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary"
+                            (click)="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>

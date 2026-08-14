@@ -1,0 +1,33 @@
+table img {
+  object-fit: cover;
+  height: 50px;
+}
+td .btn{
+  margin: 2px;
+  padding: 6px;
+  height: 30px;
+  line-height: 18px;
+}
+.modal-dialog{        max-width: 900px;}
+#editUserModal{padding-right: 0;}
+.input-group-append .input-group-text{padding: 0px 20px;}
+.status-inactive {
+  color: rgb(255, 77, 79);
+  background-color: rgb(255, 241, 240);
+  border: 1px solid rgb(255, 163, 158);
+  padding: 5px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.status-active {
+  color: rgb(82, 196, 26);
+  background-color: rgb(246, 255, 237);
+  border: 1px solid rgb(149, 222, 100);
+  padding: 5px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.card .btn-group{display: inline-block;padding: 10px;width: 100%;}
+.card .btn-group a{float: right;}
